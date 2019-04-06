@@ -2,24 +2,30 @@ import React from 'react'
 import { Row, Container, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchWizard, updateTravelType } from '../../actions/wizardActions';
+import { fetchWizard, updateClientinfo } from '../../actions/wizardActions';
 import Clientinfo from './clientinfo';
 
-class Traveltype extends React.Component {
+class ClientInfo extends React.Component {
 
     componentWillMount() {
         this.props.fetchWizard(this.props.id);
         console.log('componentWillMount');
         this.setState({
-            traveltype: this.props.traveltype}
+            traveltype: this.props.traveltype,
+            clientinfo: this.props.clientinfo
+        }
         );
     }
 
     componentWillReceiveProps(nextProps) {
         console.log("nextProps");
-        if (nextProps.traveltype) {
-            this.setState({
-                traveltype: nextProps.traveltype},
+        console.log(nextProps);
+        if (nextProps.clientinfo) {
+            this.setState(
+                {
+                    clientinfo: nextProps.clientinfo,
+                    traveltype: nextProps.traveltype
+                },
                 () => {console.log(this.state)}
             )
         }
@@ -31,15 +37,17 @@ class Traveltype extends React.Component {
         this.state = {
             traveltype: {
                 type: null
+            },
+            clientinfo: {
+                name: null
             }
         };
 
         this.domesticType = this.domesticType.bind(this);
-        this.internationalType = this.internationalType.bind(this);
     }
 
     render() {
-        if (this.state.traveltype.type === null) {
+        // if (this.state.traveltype.type === null) {
             return (
                 <Container>
                     <br />
@@ -48,51 +56,42 @@ class Traveltype extends React.Component {
                     <Row className="justify-content-md-center">
                         <div className="arc-wizard-question">What type of travel request would you like to create?</div>
                     </Row>
-                    <br></br>{this.state.traveltype.type}
+                    <br></br>
                     <Row>
                         <Col xs={12} className="text-center">
-                            <Button className="arc-button-decision" onClick={this.domesticType}>Domestic</Button>
-                            &nbsp;&nbsp;&nbsp;
-                            <Button className="arc-button-decision" onClick={this.internationalType}>International</Button>
+                            <Button className="arc-button-decision" onClick={this.domesticType}>Client = Cisco</Button>
                         </Col>
                     </Row>
                 </Container>
             );
-        } else if (this.state.traveltype.type === 'Domestic' || this.state.traveltype.type === 'International') {
-            return (
-                <Clientinfo />
-            )
-        }
+        // } else if (this.state.traveltype.type === 'Domestic' || this.state.traveltype.type === 'International') {
+        //     return (
+        //         <Clientinfo />
+        //     )
+        // }
     }
 
     domesticType(e) {
         e.preventDefault();
         
         this.setState(
-            {traveltype: {type: 'Domestic'}},
-            () => {this.props.updateTravelType(this.props.id, this.state);}
+            {clientinfo: {name: 'Cisco'}},
+            () => {this.props.updateClientinfo(this.props.id, this.state);}
         );
-    }
-
-    internationalType(e) {
-        e.preventDefault();
-        this.setState(          
-            {traveltype: {type: 'International'}},
-            () => this.props.updateTravelType(this.props.id, this.state)
-        );      
     }
 
 }
 
-Traveltype.protoTypes = {
+ClientInfo.protoTypes = {
     id: PropTypes.string.isRequired,
-    updateTravelType: PropTypes.func.isRequired,
+    updateClientinfo: PropTypes.func.isRequired,
     fetchWizard: PropTypes.func.isRequired,
     traveltype: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-    traveltype:  state.wizard.traveltype
+    traveltype:  state.wizard.traveltype,
+    clientinfo:  state.wizard.clientinfo
 })
 
-export default connect(mapStateToProps, { fetchWizard, updateTravelType })(Traveltype)
+export default connect(mapStateToProps, { fetchWizard, updateClientinfo })(ClientInfo)
