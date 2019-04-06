@@ -5,6 +5,8 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {loggedInUserEmail: null};
+
+        this.logout.bind(this);
     }
 
     componentDidMount() {
@@ -38,7 +40,7 @@ class Login extends React.Component {
                         <h1>You are logged in as {this.state.loggedInUserEmail}</h1>
                     </Row>
                     <Row className="justify-content-md-center">                    
-                        <Button className="arc-button-primary" onClick={() => {this.logout();this.initialize()}}>Logout</Button>
+                        <Button className="arc-button-primary" onClick={() => {this.logout()}}>Logout</Button>
                     </Row>
                 </Container>
             );
@@ -48,6 +50,7 @@ class Login extends React.Component {
     logout() {
         sessionStorage.clear();
         localStorage.clear();
+        this.initialize();
     }
 }
 export default Login

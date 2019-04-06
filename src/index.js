@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 import './index.css';
 import Login from './pages/login';
 import Home from './pages/home';
@@ -9,19 +9,24 @@ import ViewRequests from './pages/viewrequests';
 import Navigation from './components/Navigation';
 import * as serviceWorker from './serviceWorker';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 const routing = (
-    <div className="App">
-        <Navigation />
-        <Router>
-        <div>
-            <Route exact path="/" component={Login} />
-            <Route path="/home" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/createrequest" component={CreateRequest} />
-            <Route path="/viewrequests" component={ViewRequests} />
+    <Provider store={store}>
+        <div className="App">
+            <Navigation />
+            <Router>
+            <div>
+                <Route exact path="/" component={Login} />
+                <Route path="/home" component={Home} />
+                <Route path="/login" component={Login} />
+                <Route path="/createrequest" component={CreateRequest} />
+                <Route path="/viewrequests" component={ViewRequests} />
+            </div>
+            </Router>
         </div>
-        </Router>
-    </div>
+    </Provider>
   )
   ReactDOM.render(routing, document.getElementById('root'))
 
