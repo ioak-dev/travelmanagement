@@ -58,3 +58,7 @@ code {
   border-color: grey;
   color: darkslategray;
 }
+
+.arc-errormessage {
+  color: red;
+}

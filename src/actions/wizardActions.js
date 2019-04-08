@@ -1,9 +1,23 @@
-import { FETCH_WIZARD, UPDATE_TRAVELTYPE, UPDATE_CLIENTINFO } from './types';
+import { GO_TO_PAGE, FETCH_WIZARD, UPDATE_TRAVELTYPE, UPDATE_CLIENTINFO } from './types';
 
 export const fetchWizard = (id) => dispatch => {
     dispatch({
         type: FETCH_WIZARD,
         id: id
+    })
+}
+
+export const goToNextPage = (currentpage, count) => dispatch => {
+    dispatch({
+        type: GO_TO_PAGE,
+        currentpage: currentpage + count
+    })
+}
+
+export const goToPreviousPage = (currentpage, count) => dispatch => {
+    dispatch({
+        type: GO_TO_PAGE,
+        currentpage: currentpage - count
     })
 }
 

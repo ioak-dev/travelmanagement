@@ -1,6 +1,6 @@
 import React from 'react'
 import Login from './login'
-import Traveltype from '../components/wizard/traveltype';
+import Wizard from '../components/wizard';
 
 class CreateRequest extends React.Component {
     
@@ -23,7 +23,7 @@ class CreateRequest extends React.Component {
             );
         } else {
             return (
-                <Traveltype id={this.state.id}/>
+                <Wizard id={this.state.id}/>
             );
         }
     }

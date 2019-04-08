@@ -1,6 +1,12 @@
-import { FETCH_WIZARD, UPDATE_TRAVELTYPE, UPDATE_CLIENTINFO } from '../actions/types';
+import {
+    GO_TO_PAGE,
+    FETCH_WIZARD,
+    UPDATE_TRAVELTYPE,
+    UPDATE_CLIENTINFO
+} from '../actions/types';
 
 const initialState = {
+    currentpage: 1,
     traveltype: {
         type: null
     },
@@ -11,6 +17,13 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch(action.type) {
+        case GO_TO_PAGE:
+            console.log("reducer GO_TO_PAGE");
+            console.log(state);
+            return {
+                ...state,
+                currentpage: action.currentpage
+            }
         case FETCH_WIZARD:
             console.log("reducer FETCH_WIZARD");
             console.log(state);
