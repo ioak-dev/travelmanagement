@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Container, Row, Col } from 'react-bootstrap';
+import { Grid, Button, Typography, Fab } from '@material-ui/core';
+
 class Login extends React.Component {
     
     constructor(props) {
@@ -24,25 +25,33 @@ class Login extends React.Component {
     render() {
         if (!this.state.loggedInUserEmail) {
             return (
-                <Container>
-                    <Row className="justify-content-md-center">
-                            <h1>You are not logged in</h1>
-                    </Row>
-                    <Row className="justify-content-md-center">
-                            <a href="/login" id="connect-button">Sign in using Exchange 365</a>
-                    </Row>
-                </Container>
+                <div className="arc-root">
+                    <Grid container direction="column" justify="center" alignItems="center"  spacing={24}>
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle1" inline>You are not logged in</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                                <a href="/login" id="connect-button">Sign in using Exchange 365</a>
+                        </Grid>
+                    </Grid>
+                </div>
             )
         } else {
             return (
-                <Container>
-                    <Row className="justify-content-md-center">
-                        <h1>You are logged in as {this.state.loggedInUserEmail}</h1>
-                    </Row>
-                    <Row className="justify-content-md-center">                    
-                        <Button className="arc-button-primary" onClick={() => {this.logout()}}>Logout</Button>
-                    </Row>
-                </Container>
+                <div className="arc-root">
+                    <Grid container direction="column" justify="center" alignItems="center" spacing={24}>
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle1" inline>You are logged in as </Typography>
+                            <Typography variant="subtitle1" color="primary" inline>{this.state.loggedInUserEmail}</Typography>
+                            
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Fab variant="extended" color="secondary" onClick={() => {this.logout()}}>
+                                <i className="material-icons">power_settings_new</i> &nbsp;Logout
+                            </Fab>
+                        </Grid>
+                    </Grid>
+                </div>
             );
         }
     }
@@ -53,4 +62,4 @@ class Login extends React.Component {
         this.initialize();
     }
 }
-export default Login
+export default Login;

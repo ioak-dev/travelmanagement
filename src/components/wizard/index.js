@@ -4,8 +4,6 @@ import Clientinfo from './clientinfo';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchWizard } from '../../actions/wizardActions';
-import Domestic from './domestic';
-import International from './international';
 
 class Wizard extends React.Component {
     
@@ -22,8 +20,6 @@ class Wizard extends React.Component {
             <div>
                 {this.props.currentpage === 1 && <Traveltype />}
                 {this.props.currentpage === 2 && <Clientinfo />}
-                {this.props.currentpage === 3 && <Domestic />}
-                {this.props.currentpage === 4 && <International />}
             </div>
         );
     }

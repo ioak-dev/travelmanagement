@@ -1,5 +1,4 @@
 import React from 'react'
-import { Row, Container, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { goToPreviousPage, goToNextPage, fetchWizard, updateClientinfo } from '../../actions/wizardActions';
@@ -49,29 +48,30 @@ class ClientInfo extends React.Component {
 
     render() {
         return (
-            <Container>
-                <br />
-                <br />
-                <br />
-                <Row className="justify-content-md-center">
-                    <div className="arc-wizard-question">What type of travel request would you like to create?</div>
-                </Row>
-                <br></br>
-                <Row>
-                    <Col xs={12} className="text-center">
-                        <Button className="arc-button-decision" onClick={this.domesticType}>Client = Cisco</Button>
-                    </Col>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                    <Col xs={12} className="text-center">
-                        <Button className="arc-button-decision" onClick={this.previousPage}>Previous</Button>
-                        &nbsp;&nbsp;
-                        <Button className="arc-button-decision" onClick={this.nextPage}>Next</Button>
-                    </Col>
-                </Row>
-            </Container>
+            // <Container>
+            //     <br />
+            //     <br />
+            //     <br />
+            //     <Row className="justify-content-md-center">
+            //         <div className="arc-wizard-question">What type of travel request would you like to create?</div>
+            //     </Row>
+            //     <br></br>
+            //     <Row>
+            //         <Col xs={12} className="text-center">
+            //             <Button className="arc-button-decision" onClick={this.domesticType}>Client = Cisco</Button>
+            //         </Col>
+            //     </Row>
+            //     <br />
+            //     <br />
+            //     <Row>
+            //         <Col xs={12} className="text-center">
+            //             <Button className="arc-button-decision" onClick={this.previousPage}>Previous</Button>
+            //             &nbsp;&nbsp;
+            //             <Button className="arc-button-decision" onClick={this.nextPage}>Next</Button>
+            //         </Col>
+            //     </Row>
+            // </Container>
+            <h1>Client info</h1>
         );
     }
 

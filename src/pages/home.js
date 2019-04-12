@@ -1,5 +1,4 @@
 import React from 'react'
-import { Row, Container } from 'react-bootstrap';
 class Home extends React.Component {
   componentDidMount() {
     console.log(sessionStorage.getItem('userSigninName'));
@@ -7,11 +6,12 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Container>
-        <Row className="justify-content-md-center">
-          <h1>Home</h1>
-        </Row>
-      </Container>
+      // <Container>
+      //   <Row className="justify-content-md-center">
+      //     <h1>Home</h1>
+      //   </Row>
+      // </Container>
+      <h1>Home</h1>
     );
   }
 

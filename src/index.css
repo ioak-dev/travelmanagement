@@ -13,7 +13,25 @@ code {
     monospace;
 }
 
-/* Custom Bootstrap theme */
+/* Custom theme */
+.arc-root {
+  flex-grow: 1;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+/*
+.arc-menu-button {
+  margin-left: -12;
+  margin-right: 20;
+}
+
+.arc-paper {
+  padding: 40;
+  text-align: 'center';
+  color: red;
+}
+
 .arc-wizard-question {
   font-size: x-large;
 }
@@ -61,4 +79,4 @@ code {
 
 .arc-errormessage {
   color: red;
-}
+} */

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Row, Container, Col, Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { goToNextPage, fetchWizard, updateTravelType } from '../../actions/wizardActions';
@@ -42,31 +41,30 @@ class Traveltype extends React.Component {
 
     render() {
         return (
-            <Container>
-                <ErrorMessage errors={this.state.errors} />
-                <br />
-                <br />
-                <br />
-                <Row className="justify-content-md-center">
-                    <div className="arc-wizard-question">What type of travel request would you like to create?</div>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                    <Col xs={12} className="text-center">
-                        <Button className="arc-button-decision" onClick={this.domesticType}>Domestic</Button>
-                        &nbsp;&nbsp;&nbsp;
-                        <Button className="arc-button-decision" onClick={this.internationalType}>International</Button>
-                    </Col>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                    <Col xs={12} className="text-center">
-                        <Button className="arc-button-decision" onClick={this.nextPage}>Next</Button>
-                    </Col>
-                </Row>
-            </Container>
+                // <ErrorMessage errors={this.state.errors} />
+                // <br />
+                // <br />
+                // <br />
+                // <Row className="justify-content-md-center">
+                //     <div className="arc-wizard-question">What type of travel request would you like to create?</div>
+                // </Row>
+                // <br />
+                // <br />
+                // <Row>
+                //     <Col xs={12} className="text-center">
+                //         <Button className="arc-button-decision" onClick={this.domesticType}>Domestic</Button>
+                //         &nbsp;&nbsp;&nbsp;
+                //         <Button className="arc-button-decision" onClick={this.internationalType}>International</Button>
+                //     </Col>
+                // </Row>
+                // <br />
+                // <br />
+                // <Row>
+                //     <Col xs={12} className="text-center">
+                //         <Button className="arc-button-decision" onClick={this.nextPage}>Next</Button>
+                //     </Col>
+                // </Row>
+                <h1>Travel type</h1>
         );
     }
 
