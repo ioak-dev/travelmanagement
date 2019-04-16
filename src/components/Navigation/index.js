@@ -1,20 +1,59 @@
 import React from 'react';
 import './style.css'
 import './../../index.css'
+import Hidden from '@material-ui/core/Hidden';
 
 import AppBar from '@material-ui/core/AppBar';
-import { Toolbar, IconButton, Button, Typography } from '@material-ui/core';
+import { Toolbar, IconButton, ListItemIcon, ListItem, List, Drawer, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import ArcButtonNavWrapper from './arc-button-nav-wrapper.jsx';
+
+const arcNavTheme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+    palette: {
+      primary: {
+          main: '#3F517C'
+          // 466983
+      },
+      secondary: {
+          main: '#D8C568'
+          // FFCA3A
+      }
+    }
+  });
+
+  // ?? F0F0DF
+  
 const styles = {
-  grow: {
-    flexGrow: 1,
-  }
-};
+    list: {
+      width: 250,
+    },
+    fullList: {
+      width: 'auto',
+    },
+    toolbarButtons: {
+    marginLeft: "auto",
+    marginRight: -12
+    },
+    menuButton: {
+      marginRight: 20,
+      marginLeft: -12
+    }
+  };
 
 class Navigation extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        drawer: false
+      }
+    }
+
     componentWillMount() {
-      console.log(window.location.pathname);
     }
 
     componentWillUnmount() {
@@ -28,48 +67,98 @@ class Navigation extends React.Component {
       return 'inherit';
     }
 
-    getMenuItemVariant(path) {
-      if (window.location.pathname === path) {
-        return 'contained';
-      }
-      return 'text';
-    }
+    // getMenuItemVariant(path) {
+    //   if (window.location.pathname === path) {
+    //     return 'text';
+    //   }
+    //   return 'text';
+    // }
+
+    toggleDrawer = (side, open) => () => {
+      this.setState({
+        [side]: open
+      });
+    };
 
     render() {
-        return (
-        // <Navbar className="arc-bg-primary" variant="dark" expand="lg">
-        //   <Navbar.Brand href="#home">
-        //   <div className="logo">
-        //     <img src="https://westernacher-consulting.com/wp-content/uploads/2018/12/logo-retina.png" alt="Westernacher logo" className="tt-retina-logo" height="50"/>
-        //   </div>
-        //   </Navbar.Brand>
-        //   <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        //     <Navbar.Collapse id="basic-navbar-nav">
-        //       <Nav className="mr-auto">
-        //         <Nav.Link href="/home">Home</Nav.Link>
-        //         <Nav.Link href="/createrequest">New Request</Nav.Link>
-        //         <Nav.Link href="/viewrequests">View Requests</Nav.Link>
-        //         <Nav.Link href="/login">User Account</Nav.Link>
-        //       </Nav>
-        //     </Navbar.Collapse>
-        // </Navbar>
+
+      const LINK_HOME = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/home" label="Home" />;
+      const LINK_CREATE_REQUEST = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/createrequest" label="Create Request" />;
+      const LINK_VIEW_REQUESTS = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/viewrequests" label="View Requests" />;
+      const LINK_CONTROL_REQUESTS = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/controlrequests" label="Control Requests" />;
+      const LINK_USER_ADMINISTRATION = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/useradministration" label="User Administration" />;
+      
+        
+      const sideList = (
         <div>
+          <Typography variant="h2">Menu</Typography>
+          <List>
+              <ListItem>
+                <ListItemIcon><i className="material-icons">home</i></ListItemIcon>
+                {LINK_HOME}
+              </ListItem>
+              <ListItem>
+                <ListItemIcon><i className="material-icons">create</i></ListItemIcon>
+                {LINK_CREATE_REQUEST}
+              </ListItem>
+              <ListItem>
+                <ListItemIcon><i className="material-icons">subject</i></ListItemIcon>
+                {LINK_VIEW_REQUESTS}
+              </ListItem>
+              <ListItem>
+                <ListItemIcon><i className="material-icons">code</i></ListItemIcon>
+                {LINK_CONTROL_REQUESTS}
+              </ListItem>
+              <ListItem>
+                <ListItemIcon><i className="material-icons">person</i></ListItemIcon>
+                {LINK_USER_ADMINISTRATION}
+              </ListItem>
+          </List>
+        </div>
+      );
+
+      return (
+        <MuiThemeProvider theme={arcNavTheme}>
           <AppBar position="static">
             <Toolbar>
+              <Hidden smUp smUp>
+                <IconButton className="arc-menu-button" color="inherit" aria-label="Menu" onClick={this.toggleDrawer('drawer', true)}>
+                  <MenuIcon />
+                </IconButton>
+                <Drawer open={this.state.drawer} anchor="right" onClose={this.toggleDrawer('drawer', false)}>
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    onClick={this.toggleDrawer('drawer', false)}
+                    onKeyDown={this.toggleDrawer('drawer', false)}
+                  >
+                    {sideList}
+                  </div>
+                </Drawer>
+                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+              </Hidden>
+            
               <div className="logo">
                 <img src="https://westernacher-consulting.com/wp-content/uploads/2018/12/logo-retina.png" alt="Westernacher logo" className="tt-retina-logo" height="50"/>
               </div>
-              <IconButton className="arc-menu-button" color="inherit" aria-label="Menu">
-                <MenuIcon />
-              </IconButton>
-              <Button variant={this.getMenuItemVariant('/home')} color={this.getMenuItemColor('/home')} href="/home">Home</Button>
-              <Button variant={this.getMenuItemVariant('/createrequest')} color={this.getMenuItemColor('/createrequest')} href="/createrequest">Create Request</Button>
-              <Button variant={this.getMenuItemVariant('/viewrequests')} color={this.getMenuItemColor('/viewrequests')} href="/viewrequests">View Requests</Button>
-              <Button variant={this.getMenuItemVariant('/login')} color={this.getMenuItemColor('/login')} href="/login">Account</Button>
+              
+              <Hidden smDown>
+                {LINK_HOME}
+                {LINK_CREATE_REQUEST}
+                {LINK_VIEW_REQUESTS}
+                {LINK_CONTROL_REQUESTS}
+                {LINK_USER_ADMINISTRATION}
+              </Hidden>
+              
+              {/* Right icons */}
+              <div style={styles.toolbarButtons}></div>
+                <IconButton color="inherit" aria-label="Account" href="/login">
+                  <i className="material-icons">account_circle</i>
+                </IconButton>
             </Toolbar>
           </AppBar>
-        </div>
-        );
+        </MuiThemeProvider>
+      );
     }
 }
 

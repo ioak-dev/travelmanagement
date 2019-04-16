@@ -5,49 +5,11 @@ import {
     UPDATE_CLIENTINFO,
     UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_HOTELDETAILS
 } from '../actions/types';
-import moment from 'moment';
 
 const initialState = {
-    currentpage: 4,
-    traveltype: {
-        type: null
-    },
-    clientinfo: {
-        name: '',
-        address1: '',
-        address2: '',
-        country: '',
-        statee: '',
-        city: '',
-        zipcode: ''
-    },
-    purposeofvisit: {
-        description: ''
-    },
-    flightdetails: {
-        fromdate: moment().toDate(),
-        todate: moment().toDate(),
-        sector1:'',
-        sector2:'',
-        billability:''
-    },
-    hoteldetails: {
-        name: '',
-        address:'',
-        staycost:'',
-        billabletoclient:'',
-        duration:'',
-        remarks:''
-    },
-    localtransportdetails: {
-        dateandtime: '',
-        sector1:'',
-        dateandtimereturn:'',
-        sector2:'',
-        billabletoclient:'',
-        remarks1:'',
-        remarks2:''
-    },
+    email: '',
+    loggedin: false,
+    displayname: ''
 }
 
 export default function(state = initialState, action) {

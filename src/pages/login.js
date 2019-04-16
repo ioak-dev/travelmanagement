@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid, Button, Typography, Fab } from '@material-ui/core';
+import ArcButton from '../components/ui/elements/arc-button';
 
 class Login extends React.Component {
     
@@ -31,7 +32,7 @@ class Login extends React.Component {
                             <Typography variant="subtitle1" inline>You are not logged in</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                                <a href="/login" id="connect-button">Sign in using Exchange 365</a>
+                            <ArcButton href="/login" id="connect-button" variant="contained" color="primary" >Sign in using Exchange 365</ArcButton>
                         </Grid>
                     </Grid>
                 </div>
@@ -46,9 +47,9 @@ class Login extends React.Component {
                             
                         </Grid>
                         <Grid item xs={12}>
-                            <Fab variant="extended" color="secondary" onClick={() => {this.logout()}}>
-                                <i className="material-icons">power_settings_new</i> &nbsp;Logout
-                            </Fab>
+                            <ArcButton variant="contained" color="primary" onClick={() => {this.logout()}}>
+                                <i className="material-icons">power_settings_new</i>Sign out
+                            </ArcButton>
                         </Grid>
                     </Grid>
                 </div>

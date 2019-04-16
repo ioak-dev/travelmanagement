@@ -7,7 +7,6 @@ class CreateRequest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {loggedInUserEmail: null, id: '10ASJ20190401001'};
-
     }
 
     componentDidMount() {
