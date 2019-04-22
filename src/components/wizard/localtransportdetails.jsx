@@ -1,226 +1,107 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-    goToPreviousPage,
-    goToNextPage,
-    fetchWizard,
-    updatePurposeofvisit,
-    updateLocaltransportdetails
-} from '../../actions/wizardActions';
 import ErrorMessage from "./errormessage";
+import ArcTextField from '../ui/elements/arc-text-field';
+import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-ui/core';
+import WizardFlow from './wizard-flow';
+import withWizard from './with-wizard';
+import ArcDatetimeField from "../ui/elements/arc-datetime-field";
 
-class Localtransportdetails extends React.Component {
+const componentName = "localtransportdetails";
 
-    componentWillMount() {
-        this.props.fetchWizard(this.props.id);
-        this.setState({
-            errors: [],
-                localtransportdetails: this.props.localtransportdetails
-        }
-        );
-    }
+const LocalTransportDetails = (props) =>
+    <div className="arc-root">
+        <form noValidate autoComplete="off">
+            <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
+                <Grid item xs={12}>
+                    <WizardFlow headline="Transport Details"
+                                previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
+                </Grid>
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.localtransportdetails) {
-            this.setState(
-                {
-                    localtransportdetails: nextProps.localtransportdetails
-                },
-                () => {console.log(this.state)}
-            )
-        }
-    }
+                <ErrorMessage errors={props.errormessages} />
 
-    constructor(props) {
-        super(props);
+                <br />
 
-        this.state = {
-            localtransportdetails: {
-                dateandtime: '',
-                sector1:'',
-                dateandtimereturn:'',
-                sector2:'',
-                billabletoclient:'',
-                remarks1:'',
-                remarks2:''
-            }
-        };
 
-        this.previousPage = this.previousPage.bind(this);
-        this.nextPage = this.nextPage.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+                <Grid item xs={6}>
+                    <ArcDatetimeField id={componentName} label="Journey date*" name="dateandtime" {...props} handlechange={e => props.handledatechange(e, "dateandtime")}
+                                      ampm={true} disablePast error={props.errorfields.indexOf("dateandtime") > -1}/>
+                </Grid>
+                <Grid item xs={6}>
+                    <ArcTextField id={componentName} label="sector*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
+                                  error={props.errorfields.indexOf("sector1") > -1}/>
+                </Grid>
 
-    render() {
-        return (
-            // <Container>
-            //     <ErrorMessage errors={this.state.errors} />
-            //     <br />
-            //     <Row className="justify-content-md-center">
-            //         <div className="arc-wizard-question">Provide Local Transport Details</div>
-            //     </Row>
-            //     <br />
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="dateandtime"
-            //                     value={this.state.localtransportdetails.dateandtime}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Date And Time</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
+                <Grid item xs={6}>
+                    <ArcDatetimeField id={componentName} label="Return date*" name="dateandtimereturn" {...props} handlechange={e => props.handledatechange(e, "dateandtimereturn")}
+                                      ampm={true} disablePast error={props.errorfields.indexOf("dateandtimereturn") > -1}/>
+                </Grid>
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="sector1"
-            //                     value={this.state.localtransportdetails.sector1}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Sector</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
+                <Grid item xs={6}>
+                    <ArcTextField id={componentName} label="sector*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
+                                  error={props.errorfields.indexOf("sector2") > -1}/>
+                </Grid>
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="dateandtimereturn"
-            //                     value={this.state.localtransportdetails.dateandtimereturn}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Return Date And Time</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
+                <Grid item xs={12}>
+                    <ArcTextField id={componentName} label="Remarks on Dining Allowance" name="remarks1" handlechange={e => props.handlechange(e)}  {...props}
+                                  error={props.errorfields.indexOf("remarks1") > -1}/>
+                </Grid>
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="sector2"
-            //                     value={this.state.localtransportdetails.sector2}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Sector</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
+                <Grid item xs={12}>
+                    <ArcTextField id={componentName} label="Remarks on Travel Allowance" name="remarks2" handlechange={e => props.handlechange(e)}  {...props}
+                                  error={props.errorfields.indexOf("remarks2") > -1}/>
+                </Grid>
 
-            //     <Row>
-            //     <Col xs={3}></Col>
-            //     <Col xs={6} className="text-center">
-            //         <InputGroup size="sm" className="mb-3">
-            //             <FormControl
-            //                 name="billabletoclient"
-            //                 value={this.state.localtransportdetails.billabletoclient}
-            //                 onChange={e => this.handleChange(e)}
-            //                 aria-describedby="inputGroup-sizing-sm" />
-            //             <InputGroup.Append>
-            //                 <InputGroup.Text id="inputGroup-sizing-sm">Billable to Client</InputGroup.Text>
-            //             </InputGroup.Append>
-            //         </InputGroup>
-            //     </Col>
-            // </Row>
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="remarks1"
-            //                     value={this.state.localtransportdetails.remarks1}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Remarks on Dinning Allowance if any</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="remarks2"
-            //                     value={this.state.localtransportdetails.remarks2}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Remarks on Travel Allowance if any</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
-            //     <br />
-            //     <Row>
-            //         <Col xs={12} className="text-center">
-            //             <Button className="arc-button-decision" onClick={this.previousPage}>Previous</Button>
-            //             &nbsp;&nbsp;
-            //             <Button className="arc-button-decision" onClick={this.nextPage}>Next</Button>
-            //         </Col>
-            //     </Row>
+                <Grid item xs={6}>
+                    <RadioGroup
+                        aria-label="Billability"
+                        name="billability"
+                        value={props[componentName].billability}
+                        onChange={props.handlechange}
+                        row
+                    >
+                        <FormControlLabel value="billable" control={<Radio />} label="Billable" />
+                        <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
+                    </RadioGroup>
+                </Grid>
 
-            // </Container>
-            <h2>localtransportdetails</h2>
-        );
-    }
+                <Grid item xs={6}></Grid>
 
-    previousPage(e) {
-        e.preventDefault();
-        this.props.updateLocaltransportdetails(this.props.id, this.state);
-        this.props.goToPreviousPage(this.props.currentpage, 1);        
-    }
 
-    handleChange(event) {
-        this.setState(
-            {
-                localtransportdetails: {
-                    ...this.state.localtransportdetails,
-                    [event.currentTarget.name]: event.currentTarget.value
-                }
-            }
-        );
-    }
+            </Grid>
 
-    nextPage(e) {
-        e.preventDefault();
-        this.props.updateLocaltransportdetails(this.props.id, this.state);
-        this.props.goToNextPage(this.props.currentpage, 1);
+
+        </form>
+    </div>
+
+function previousPage(props) {
+    props.previousPage(1);
+}
+
+function nextPage(props) {
+    if (validate(props).length === 0) {
+        props.nextPage(1);
     }
 }
 
-Localtransportdetails.protoTypes = {
-    id: PropTypes.string.isRequired,
-    currentpage: PropTypes.number.isRequired,
-    fetchWizard: PropTypes.func.isRequired,
-    goToPreviousPage: PropTypes.func.isRequired,
-    goToNextPage: PropTypes.func.isRequired,
-    localtransportdetails: PropTypes.object
+function validate(props) {
+    const errorfields = props.validateMandatoryFields('remarks2');
+    const errormessages = [];
+
+    if (errorfields.length > 0) {
+        errormessages.push("Mandatory fields missing");
+    }
+
+    props.reportErrors(errorfields, errormessages);
+
+    return errorfields;
 }
 
-const mapStateToProps = state => ({
-    currentpage: state.wizard.currentpage,
-    localtransportdetails:  state.wizard.localtransportdetails
-})
 
-export default connect(mapStateToProps, { goToPreviousPage, goToNextPage, fetchWizard, updateLocaltransportdetails })(Localtransportdetails)
+
+LocalTransportDetails.protoTypes = {
+    hoteldetails: PropTypes.object
+}
+
+export default withWizard(LocalTransportDetails, componentName)

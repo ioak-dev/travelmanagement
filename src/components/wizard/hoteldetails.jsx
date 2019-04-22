@@ -1,209 +1,96 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-    goToPreviousPage,
-    goToNextPage,
-    fetchWizard,
-    updateHoteldetails
-} from '../../actions/wizardActions';
 import ErrorMessage from "./errormessage";
+import ArcTextField from '../ui/elements/arc-text-field';
+import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-ui/core';
+import WizardFlow from './wizard-flow';
+import withWizard from './with-wizard';
+import ArcDatetimeField from "../ui/elements/arc-datetime-field";
 
-class Hoteldetails extends React.Component {
+const componentName = "hoteldetails";
 
-    componentWillMount() {
-        this.props.fetchWizard(this.props.id);
-        this.setState({
-            errors: [],
-            hoteldetails: this.props.hoteldetails
-        }
-        );
-    }
+const HotelDetails = (props) =>
+    <div className="arc-root">
+        <form noValidate autoComplete="off">
+            <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
+                <Grid item xs={12}>
+                    <WizardFlow headline="Accommodation Details"
+                        previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
+                </Grid>
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.hoteldetails) {
-            this.setState(
-                {
-                    hoteldetails: nextProps.hoteldetails
-                },
-                () => {console.log(this.state)}
-            )
-        }
-    }
+                <ErrorMessage errors={props.errormessages} />
 
-    constructor(props) {
-        super(props);
+                <br />
 
-        this.state = {
-            hoteldetails: {
-                name: '',
-                address:'',
-                staycost:'',
-                billabletoclient:'',
-                duration:'',
-                remarks:''
-            }
-        };
+                <Grid item xs={12}>
+                    <ArcTextField id={componentName} label="Hotel name*" name="name" handlechange={e => props.handlechange(e)}   {...props}
+                                  error={props.errorfields.indexOf("name") > -1}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <ArcTextField id={componentName} label="Hotel Address*" name="address" handlechange={e => props.handlechange(e)} multiline rows={3}  {...props}
+                                  error={props.errorfields.indexOf("name") > -1}/>
+                </Grid>
 
-        this.previousPage = this.previousPage.bind(this);
-        this.nextPage = this.nextPage.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+                <Grid item xs={6}>
+                    <ArcDatetimeField id={componentName} label="From date*" name="fromdate" {...props} handlechange={e => props.handledatechange(e, "fromdate")}
+                                      ampm={true} disablePast error={props.errorfields.indexOf("fromdate") > -1}/>
+                </Grid>
 
-    render() {
-        return (
-            // <Container>
-            //     <ErrorMessage errors={this.state.errors} />
-            //     <br />
-            //     <Row className="justify-content-md-center">
-            //         <div className="arc-wizard-question">Provide Accommodation Details</div>
-            //     </Row>
-            //     <br />
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="name"
-            //                     value={this.state.hoteldetails.name}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Hotel Name</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
+                <Grid item xs={6}>
+                    <ArcDatetimeField id={componentName} label="To date*" name="todate" {...props} handlechange={e => props.handledatechange(e, "todate")}
+                                      ampm={true} disablePast error={props.errorfields.indexOf("todate") > -1}/>
+                </Grid>
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup>
+                <Grid item xs={6}>
+                    <RadioGroup
+                        aria-label="Billability"
+                        name="billability"
+                        value={props[componentName].billability}
+                        onChange={props.handlechange}
+                        row
+                    >
+                        <FormControlLabel value="billable" control={<Radio />} label="Billable" />
+                        <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
+                    </RadioGroup>
+                </Grid>
 
-            //                 <FormControl name="address"
-            //                              value={this.state.hoteldetails.address}
-            //                              onChange={e => this.handleChange(e)}
-            //                              as="textarea"/>
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text>Hotel Address</InputGroup.Text>
-            //                 </InputGroup.Append>
+                <Grid item xs={6}>
+                    <ArcTextField id={componentName} label="Total Stay Cost*" name="staycost" handlechange={e => props.handlechange(e)}  {...props}
+                                  error={props.errorfields.indexOf("name") > -1}/>
+                </Grid>
+            </Grid>
 
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
-            //     <br/>
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="staycost"
-            //                     value={this.state.hoteldetails.staycost}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Stay Cost</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="billabletoclient"
-            //                     value={this.state.hoteldetails.billabletoclient}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Billable to Client</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
+        </form>
+    </div>
 
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="duration"
-            //                     value={this.state.hoteldetails.duration}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Duration</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
-            //     <Row>
-            //         <Col xs={3}></Col>
-            //         <Col xs={6} className="text-center">
-            //             <InputGroup size="sm" className="mb-3">
-            //                 <FormControl
-            //                     name="remarks"
-            //                     value={this.state.hoteldetails.remarks}
-            //                     onChange={e => this.handleChange(e)}
-            //                     aria-describedby="inputGroup-sizing-sm" />
-            //                 <InputGroup.Append>
-            //                     <InputGroup.Text id="inputGroup-sizing-sm">Remarks</InputGroup.Text>
-            //                 </InputGroup.Append>
-            //             </InputGroup>
-            //         </Col>
-            //     </Row>
-            //     <br />
-            //     <Row>
-            //         <Col xs={12} className="text-center">
-            //             <Button className="arc-button-decision" onClick={this.previousPage}>Previous</Button>
-            //             &nbsp;&nbsp;
-            //             <Button className="arc-button-decision" onClick={this.nextPage}>Next</Button>
-            //         </Col>
-            //     </Row>
+function previousPage(props) {
+    props.previousPage(1);
+}
 
-            // </Container>
-            <h2>hoteldetails</h2>
-        );
-    }
-
-    previousPage(e) {
-        e.preventDefault();
-        this.props.updateHoteldetails(this.props.id, this.state);
-        this.props.goToPreviousPage(this.props.currentpage, 1);        
-    }
-
-    handleChange(event) {
-        this.setState(
-            {
-                hoteldetails: {
-                    ...this.state.hoteldetails,
-                    [event.currentTarget.name]: event.currentTarget.value
-                }
-            }
-        );
-    }
-
-    nextPage(e) {
-        e.preventDefault();
-        this.props.updateHoteldetails(this.props.id, this.state);
-        this.props.goToNextPage(this.props.currentpage, 1);
+function nextPage(props) {
+    if (validate(props).length === 0) {
+        props.nextPage(1);
     }
 }
 
-Hoteldetails.protoTypes = {
-    id: PropTypes.string.isRequired,
-    currentpage: PropTypes.number.isRequired,
-    fetchWizard: PropTypes.func.isRequired,
-    goToPreviousPage: PropTypes.func.isRequired,
-    goToNextPage: PropTypes.func.isRequired,
+function validate(props) {
+    const errorfields = props.validateMandatoryFields('name');
+    const errormessages = [];
+
+    if (errorfields.length > 0) {
+        errormessages.push("Mandatory fields missing");
+    }
+
+    props.reportErrors(errorfields, errormessages);
+
+    return errorfields;
+}
+
+
+
+HotelDetails.protoTypes = {
     hoteldetails: PropTypes.object
 }
 
-const mapStateToProps = state => ({
-    currentpage: state.wizard.currentpage,
-    hoteldetails:  state.wizard.hoteldetails
-})
-
-export default connect(mapStateToProps, { goToPreviousPage, goToNextPage, fetchWizard, updateHoteldetails })(Hoteldetails)
+export default withWizard(HotelDetails, componentName)

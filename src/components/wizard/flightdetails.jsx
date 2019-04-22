@@ -56,15 +56,15 @@ class Flightdetails extends React.Component {
 
     render() {
         return (
-            
+
             <div className="arc-root">
 
-                <form noValidate autoComplete="off">                   
+                <form noValidate autoComplete="off">
                     <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                         <Grid item xs={12}>
                             <Grid item xs={12}>
-                            <WizardFlow previouspage={this.previousPageAction.bind(this)} saveforlater={this.saveforlater.bind(this)} nextpage={this.nextpage.bind(this)}></WizardFlow>
-                            </Grid>            
+                            <WizardFlow headline="Flight Details" previouspage={this.previousPageAction.bind(this)} saveforlater={this.saveforlater.bind(this)} nextpage={this.nextpage.bind(this)}></WizardFlow>
+                            </Grid>
                         </Grid>
                         <ErrorMessage errors={this.state.errormessages} />
 
@@ -75,32 +75,28 @@ class Flightdetails extends React.Component {
                                         error={this.state.errorfields.indexOf("sector1") > -1} />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <ArcTextField id={componentName} label="Sector 2*" name="sector2" handlechange={this.handlechange.bind(this)} {...this.state} 
+                                    <ArcTextField id={componentName} label="Sector 2*" name="sector2" handlechange={this.handlechange.bind(this)} {...this.state}
                                         error={this.state.errorfields.indexOf("sector2") > -1}/>
                                 </Grid>
 
-                                <Grid item xs={6}>                                
+                                <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
                                         <div className="picker">
-                                            <ArcDatetimeField id={componentName} label="From date*" name="fromdate" handlechange={this.handledatechange.bind(this)} {...this.state} 
+                                            <ArcDatetimeField id={componentName} label="From date*" name="fromdate" handlechange={this.handledatechange.bind(this)} {...this.state}
                                                 ampm={true} disablePast error={this.state.errorfields.indexOf("fromdate") > -1}/>
                                         </div>
                                     </MuiPickersUtilsProvider>
                                 </Grid>
-                                <Grid item xs={6}>                                
+                                <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
                                         <div className="picker">
-                                            <ArcDatetimeField id={componentName} label="To date*" name="todate" handlechange={this.handledatechange.bind(this)} {...this.state} 
+                                            <ArcDatetimeField id={componentName} label="To date*" name="todate" handlechange={this.handledatechange.bind(this)} {...this.state}
                                                 ampm={true} disablePast error={this.state.errorfields.indexOf("todate") > -1}/>
                                         </div>
                                     </MuiPickersUtilsProvider>
                                 </Grid>
 
-                                <Grid item xs={6}></Grid>
-                                <Grid item xs={3}>
-                                    <FormLabel>Billability</FormLabel>
-                                </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={6}>
                                     <RadioGroup
                                             aria-label="Billability"
                                             name="billability"
@@ -111,10 +107,11 @@ class Flightdetails extends React.Component {
                                             <FormControlLabel value="billable" control={<Radio />} label="Billable" />
                                             <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
                                     </RadioGroup>
-                                </Grid>                                
-                                
+                                </Grid>
+                                <Grid item xs={6}></Grid>
+
                             </Grid>
-                        </Grid>                        
+                        </Grid>
                     </Grid>
                 </form>
             </div>
@@ -124,7 +121,7 @@ class Flightdetails extends React.Component {
     previousPageAction(e) {
         e.preventDefault();
         this.props.updateFlightdetails(this.props.id, this.state);
-        this.props.goToPreviousPage(this.props.currentpage, 1);        
+        this.props.goToPreviousPage(this.props.currentpage, 1);
     }
 
     handledatechange(event, fieldname) {
@@ -186,8 +183,8 @@ class Flightdetails extends React.Component {
 
 
     validate() {
-        
-        const errorfields = this.validateMandatoryFields('sector1', 'sector2', 'fromdate', 'todate', 'billability');      
+
+        const errorfields = this.validateMandatoryFields('sector1', 'sector2', 'fromdate', 'todate', 'billability');
         const errormessages = [];
 
         if (errorfields.length > 0) {

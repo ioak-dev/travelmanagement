@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import { goToPreviousPage, goToNextPage, fetchWizard, updateWizard } from '../../actions/wizardActions';
+import moment from 'moment';
 
 const withWizard = (WrappedComponent, dataref) => {
     class Wrapper extends Component {
@@ -28,9 +29,22 @@ const withWizard = (WrappedComponent, dataref) => {
             };
 
             this.handlechange = this.handlechange.bind(this);
+            this.handledatechange = this.handledatechange.bind(this);
         }
 
-      
+
+        handledatechange(event, fieldname) {
+            this.setState(
+                {
+                    [dataref]: {
+                        ...this.state[dataref],
+                        [fieldname]: moment(event).toDate()
+                    }
+                }
+            );
+        }
+
+
         handlechange(event) {
             this.setState(
                 {
@@ -39,7 +53,7 @@ const withWizard = (WrappedComponent, dataref) => {
                         [event.currentTarget.name]: event.currentTarget.value
                     }
                 }
-            )           
+            )
         }
 
         getReducerType() {
@@ -82,9 +96,10 @@ const withWizard = (WrappedComponent, dataref) => {
 
         render() {
             return (
-                <WrappedComponent 
+                <WrappedComponent
                     reportErrors={this.reportErrors.bind(this)}
                     handlechange={this.handlechange.bind(this)}
+                    handledatechange={this.handledatechange.bind(this)}
                     nextPage={this.nextPage.bind(this)}
                     previousPage={this.previousPage.bind(this)}
                     saveForLater={this.saveForLater.bind(this)}
@@ -100,9 +115,11 @@ const withWizard = (WrappedComponent, dataref) => {
         traveltype:  state.wizard.traveltype,
         clientinfo:  state.wizard.clientinfo,
         purposeofvisit:  state.wizard.purposeofvisit,
-        flightdetails:  state.wizard.flightdetails
+        flightdetails:  state.wizard.flightdetails,
+        hoteldetails: state.wizard.hoteldetails,
+        localtransportdetails: state.wizard.localtransportdetails
     })
-    
+
     return connect(mapStateToProps, { goToPreviousPage, goToNextPage, fetchWizard, updateWizard })(Wrapper);
 }
 

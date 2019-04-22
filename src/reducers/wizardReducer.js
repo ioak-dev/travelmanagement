@@ -3,12 +3,12 @@ import {
     FETCH_WIZARD,
     UPDATE_TRAVELTYPE,
     UPDATE_CLIENTINFO,
-    UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_HOTELDETAILS
+    UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_HOTELDETAILS, UPDATE_LOCALTRANSPORTDETAILS
 } from '../actions/types';
 import moment from 'moment';
 
 const initialState = {
-    currentpage: 4,
+    currentpage: 1,
     traveltype: {
         type: null
     },
@@ -36,13 +36,14 @@ const initialState = {
         address:'',
         staycost:'',
         billabletoclient:'',
-        duration:'',
+        fromdate: moment().toDate(),
+        todate: moment().toDate(),
         remarks:''
     },
     localtransportdetails: {
-        dateandtime: '',
+        dateandtime: moment().toDate(),
         sector1:'',
-        dateandtimereturn:'',
+        dateandtimereturn: moment().toDate(),
         sector2:'',
         billabletoclient:'',
         remarks1:'',
@@ -99,6 +100,13 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 hoteldetails: action.payload.hoteldetails
+            }
+        case UPDATE_LOCALTRANSPORTDETAILS:
+            console.log("reducer UPDATE_LOCALTRANSPORTDETAILS");
+            console.log(state);
+            return {
+                ...state,
+                localtransportdetails: action.payload.localtransportdetails
             }
         default:
             return state;
