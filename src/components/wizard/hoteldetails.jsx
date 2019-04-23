@@ -75,7 +75,7 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('name');
+    const errorfields = props.validateMandatoryFields('name','address','staycost','billability');
     const errormessages = [];
 
     if (errorfields.length > 0) {

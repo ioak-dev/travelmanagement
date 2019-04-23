@@ -35,7 +35,7 @@ const initialState = {
         name: '',
         address:'',
         staycost:'',
-        billabletoclient:'',
+        billability:'',
         fromdate: moment().toDate(),
         todate: moment().toDate(),
         remarks:''
@@ -45,7 +45,7 @@ const initialState = {
         sector1:'',
         dateandtimereturn: moment().toDate(),
         sector2:'',
-        billabletoclient:'',
+        billability:'',
         remarks1:'',
         remarks2:''
     },

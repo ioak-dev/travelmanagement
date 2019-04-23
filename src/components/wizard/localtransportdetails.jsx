@@ -15,41 +15,38 @@ const LocalTransportDetails = (props) =>
             <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                 <Grid item xs={12}>
                     <WizardFlow headline="Transport Details"
-                                previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
+                                previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} submit={nextPage.bind(this, props)} />
                 </Grid>
 
                 <ErrorMessage errors={props.errormessages} />
 
                 <br />
-
-
                 <Grid item xs={6}>
-                    <ArcDatetimeField id={componentName} label="Journey date*" name="dateandtime" {...props} handlechange={e => props.handledatechange(e, "dateandtime")}
-                                      ampm={true} disablePast error={props.errorfields.indexOf("dateandtime") > -1}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="sector*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
+                    <ArcTextField id={componentName} label="Onward sector*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("sector1") > -1}/>
                 </Grid>
 
+                <Grid item xs={6}>
+                    <ArcTextField id={componentName} label="Return sector*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
+                                  error={props.errorfields.indexOf("sector2") > -1}/>
+                </Grid>
 
+                <Grid item xs={6}>
+                    <ArcDatetimeField id={componentName} label="Onward date*" name="dateandtime" {...props} handlechange={e => props.handledatechange(e, "dateandtime")}
+                                      ampm={true} disablePast error={props.errorfields.indexOf("dateandtime") > -1}/>
+                </Grid>
                 <Grid item xs={6}>
                     <ArcDatetimeField id={componentName} label="Return date*" name="dateandtimereturn" {...props} handlechange={e => props.handledatechange(e, "dateandtimereturn")}
                                       ampm={true} disablePast error={props.errorfields.indexOf("dateandtimereturn") > -1}/>
                 </Grid>
 
-                <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="sector*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("sector2") > -1}/>
-                </Grid>
-
                 <Grid item xs={12}>
-                    <ArcTextField id={componentName} label="Remarks on Dining Allowance" name="remarks1" handlechange={e => props.handlechange(e)}  {...props}
+                    <ArcTextField id={componentName} label="Remarks on Dining Allowance" name="remarks1" handlechange={e => props.handlechange(e)} multiline rows={3}  {...props}
                                   error={props.errorfields.indexOf("remarks1") > -1}/>
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ArcTextField id={componentName} label="Remarks on Travel Allowance" name="remarks2" handlechange={e => props.handlechange(e)}  {...props}
+                    <ArcTextField id={componentName} label="Remarks on Travel Allowance" name="remarks2" handlechange={e => props.handlechange(e)} multiline rows={3} {...props}
                                   error={props.errorfields.indexOf("remarks2") > -1}/>
                 </Grid>
 
@@ -86,7 +83,7 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('remarks2');
+    const errorfields = props.validateMandatoryFields('sector1','sector2','billability');
     const errormessages = [];
 
     if (errorfields.length > 0) {
