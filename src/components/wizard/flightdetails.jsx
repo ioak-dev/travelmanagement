@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorMessage from "./errormessage";
 import ArcTextField from '../ui/elements/arc-text-field';
-import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-ui/core';
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 import ArcDatetimeField from "../ui/elements/arc-datetime-field";
+import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-ui/core';
+import moment from 'moment';
 
 const componentName = "flightdetails";
 
@@ -22,21 +23,21 @@ const FlightDetails = (props) =>
 
                 <br />
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Hotel name*" name="name" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("name") > -1}/>
+                    <ArcTextField id={componentName} label="Onward Flight*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
+                                  error={props.errorfields.indexOf("sector1") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Hotel Address*" name="address" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("address") > -1}/>
+                    <ArcTextField id={componentName} label="Return Flight*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
+                                  error={props.errorfields.indexOf("sector2") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ArcDatetimeField id={componentName} label="From date*" name="fromdate" {...props} handlechange={e => props.handledatechange(e, "dateandtime")}
+                    <ArcDatetimeField id={componentName} label="From date*" name="fromdate" {...props} handlechange={e => props.handledatechange(e, "fromdate")}
                                       ampm={true} disablePast error={props.errorfields.indexOf("fromdate") > -1}/>
                 </Grid>
                 <Grid item xs={6}>
-                    <ArcDatetimeField id={componentName} label="To date*" name="todate" {...props} handlechange={e => props.handledatechange(e, "dateandtimereturn")}
+                    <ArcDatetimeField id={componentName} label="To date*" name="todate" {...props} handlechange={e => props.handledatechange(e, "todate")}
                                       ampm={true} disablePast error={props.errorfields.indexOf("todate") > -1}/>
                 </Grid>
 
@@ -74,11 +75,25 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('name','address');
+    const errorfields = props.validateMandatoryFields('sector1','sector2','billability');
     const errormessages = [];
 
     if (errorfields.length > 0) {
         errormessages.push("Mandatory fields missing");
+    }
+
+    // Series of business validations
+    if(moment(props.flightdetails.fromdate).toDate() <= moment().toDate()) {
+        errormessages.push('Onward journey cannot be in the past');
+        errorfields.push('fromdate');
+    }
+    if(moment(props.flightdetails.todate).toDate() <= moment().toDate()) {
+        errormessages.push('Return journey cannot be in the past');
+        errorfields.push('todate');
+    }
+    if(moment(props.flightdetails.todate).toDate() < moment(props.flightdetails.fromdate).toDate()) {
+        errormessages.push('Return journey cannot be before onward journey');
+        errorfields.push('todate');
     }
 
     props.reportErrors(errorfields, errormessages);

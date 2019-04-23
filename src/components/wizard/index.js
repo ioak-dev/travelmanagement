@@ -8,16 +8,17 @@ import Purposeofvisit from "./purposeofvisit.jsx";
 import Flightdetails from "./flightdetails.jsx";
 import Hoteldetails from "./hoteldetails.jsx"
 import Localtransportdetails from "./localtransportdetails.jsx"
+import Review from "./review.jsx"
 import { Grid, Hidden } from '@material-ui/core';
 
 class Wizard extends React.Component {
-    
+
     componentWillMount() {
         this.props.fetchWizard(this.props.id);
     }
 
     render() {
-        const wizardPages = 
+        const wizardPages =
             <div>
                 {this.props.currentpage === 1 && <Traveltype />}
                 {this.props.currentpage === 2 && <Clientinfo />}
@@ -25,6 +26,7 @@ class Wizard extends React.Component {
                 {this.props.currentpage === 4 && <Flightdetails />}
                 {this.props.currentpage === 5 && <Hoteldetails />}
                 {this.props.currentpage === 6 && <Localtransportdetails />}
+                {this.props.currentpage === 7 && <Review />}
             </div>;
 
         return (
@@ -38,7 +40,7 @@ class Wizard extends React.Component {
                 </Hidden>
                 <Hidden smDown>
                     <Grid item xs={3}></Grid>
-                    <Grid item xs={6}>                    
+                    <Grid item xs={6}>
                         {wizardPages}
                     </Grid>
                     <Grid item xs={3}></Grid>

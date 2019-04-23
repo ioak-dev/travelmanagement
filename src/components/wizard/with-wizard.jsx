@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
-import { goToPreviousPage, goToNextPage, fetchWizard, updateWizard } from '../../actions/wizardActions';
+import { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard } from '../../actions/wizardActions';
 import moment from 'moment';
 
 const withWizard = (WrappedComponent, dataref) => {
@@ -72,6 +72,10 @@ const withWizard = (WrappedComponent, dataref) => {
             this.props.goToNextPage(this.props.currentpage, count);
         }
 
+        firstPage() {
+            this.props.goToFirstPage();
+        }
+
         previousPage(count) {
             this.props.updateWizard(this.getReducerType(), "1", this.state);
             this.props.goToPreviousPage(this.props.currentpage, count);
@@ -100,6 +104,7 @@ const withWizard = (WrappedComponent, dataref) => {
                     reportErrors={this.reportErrors.bind(this)}
                     handlechange={this.handlechange.bind(this)}
                     handledatechange={this.handledatechange.bind(this)}
+                    firstPage={this.firstPage.bind(this)}
                     nextPage={this.nextPage.bind(this)}
                     previousPage={this.previousPage.bind(this)}
                     saveForLater={this.saveForLater.bind(this)}
@@ -120,7 +125,7 @@ const withWizard = (WrappedComponent, dataref) => {
         localtransportdetails: state.wizard.localtransportdetails
     })
 
-    return connect(mapStateToProps, { goToPreviousPage, goToNextPage, fetchWizard, updateWizard })(Wrapper);
+    return connect(mapStateToProps, { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard })(Wrapper);
 }
 
 

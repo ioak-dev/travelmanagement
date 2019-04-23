@@ -41,7 +41,7 @@ const ClientInfo = (props) =>
                 </Grid>
                 <Grid item xs={6}>
                     <ArcTextField id={componentName} label="State*" name="statee" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("state") > -1}/>
+                                  error={props.errorfields.indexOf("statee") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
@@ -77,11 +77,11 @@ function validate(props) {
     if (errorfields.length > 0) {
         errormessages.push("Mandatory fields missing");
     }
-    /*// Series of business validations
-    if (isNaN(this.state.clientinfo.zipcode)) {
+    // Series of business validations
+    if (isNaN(props.clientinfo.zipcode)) {
         errorfields.push("zipcode");
         errormessages.push("Not a valid Zip code");
-    }*/
+    }
 
     props.reportErrors(errorfields, errormessages);
 

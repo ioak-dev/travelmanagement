@@ -27,6 +27,13 @@ export const goToPreviousPage = (currentpage, count) => dispatch => {
     })
 }
 
+export const goToFirstPage = () => dispatch => {
+    dispatch({
+        type: GO_TO_PAGE,
+        currentpage: 1
+    })
+}
+
 export const updateTravelType = (id, data) => dispatch => {
     dispatch({
         type: UPDATE_TRAVELTYPE,

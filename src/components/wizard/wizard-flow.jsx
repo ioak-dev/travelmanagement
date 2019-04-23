@@ -11,6 +11,9 @@ function WizardFlow(props) {
                     {props.previouspage && <ArcButton variant="contained" color="default" onClick={props.previouspage}>
                         <i className="material-icons">skip_previous</i>Previous
                     </ArcButton>}
+                    {props.modify && <ArcButton variant="contained" color="secondary" onClick={props.modify}>
+                        <i className="material-icons">edit</i>Edit
+                    </ArcButton>}
                 </Grid>
                 <Grid container item xs={6} justify="flex-end">
                     <Hidden smDown>
@@ -22,18 +25,17 @@ function WizardFlow(props) {
                     {props.nextpage && <ArcButton lighttext variant="contained" color="primary" onClick={props.nextpage}>
                         <i className="material-icons">skip_next</i>Next
                     </ArcButton>}
+                    {props.review && <ArcButton lighttext variant="contained" color="primary" onClick={props.review}>
+                        <i className="material-icons">assignment</i>Review
+                    </ArcButton>}
                     {props.submit && <ArcButton variant="contained" color="primary" onClick={props.submit}>
                         <i className="material-icons">check</i>Submit
                     </ArcButton>}
                 </Grid>
             </Grid>
             <br />
-            <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
-                <Grid container xs={12}>
-                    <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
-                        <Typography variant="headline">{props.headline}</Typography>
-                    </Grid>
-                </Grid>
+            <Grid container xs={12} justify="center">
+                <Typography variant="headline">{props.headline}</Typography>
             </Grid>
         </div>
     )

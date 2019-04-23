@@ -6,6 +6,7 @@ import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-u
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 import ArcDatetimeField from "../ui/elements/arc-datetime-field";
+import moment from 'moment';
 
 const componentName = "localtransportdetails";
 
@@ -14,8 +15,8 @@ const LocalTransportDetails = (props) =>
         <form noValidate autoComplete="off">
             <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                 <Grid item xs={12}>
-                    <WizardFlow headline="Transport Details"
-                                previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} submit={nextPage.bind(this, props)} />
+                    <WizardFlow headline="Local Transportation"
+                                previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} review={nextPage.bind(this, props)} />
                 </Grid>
 
                 <ErrorMessage errors={props.errormessages} />
@@ -78,6 +79,7 @@ function previousPage(props) {
 
 function nextPage(props) {
     if (validate(props).length === 0) {
+        console.log(11);
         props.nextPage(1);
     }
 }
@@ -88,6 +90,20 @@ function validate(props) {
 
     if (errorfields.length > 0) {
         errormessages.push("Mandatory fields missing");
+    }
+
+    // Series of business validations
+    if(moment(props.localtransportdetails.dateandtime).toDate() <= moment().toDate()) {
+        errormessages.push('Onward journey cannot be in the past');
+        errorfields.push('dateandtime');
+    }
+    if(moment(props.localtransportdetails.dateandtimereturn).toDate() <= moment().toDate()) {
+        errormessages.push('Return journey cannot be in the past');
+        errorfields.push('dateandtimereturn');
+    }
+    if(moment(props.localtransportdetails.dateandtime).toDate() < moment(props.hoteldetails.dateandtimereturn).toDate()) {
+        errormessages.push('Return journey cannot be before onward journey');
+        errorfields.push('dateandtime');
     }
 
     props.reportErrors(errorfields, errormessages);

@@ -6,6 +6,7 @@ import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-u
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 import ArcDatetimeField from "../ui/elements/arc-datetime-field";
+import moment from 'moment';
 
 const componentName = "hoteldetails";
 
@@ -80,6 +81,20 @@ function validate(props) {
 
     if (errorfields.length > 0) {
         errormessages.push("Mandatory fields missing");
+    }
+
+    // Series of business validations
+    if(moment(props.hoteldetails.fromdate).toDate() <= moment().toDate()) {
+        errormessages.push('Onward journey cannot be in the past');
+        errorfields.push('fromdate');
+    }
+    if(moment(props.hoteldetails.todate).toDate() <= moment().toDate()) {
+        errormessages.push('Return journey cannot be in the past');
+        errorfields.push('todate');
+    }
+    if(moment(props.hoteldetails.todate).toDate() < moment(props.hoteldetails.fromdate).toDate()) {
+        errormessages.push('Return journey cannot be before onward journey');
+        errorfields.push('todate');
     }
 
     props.reportErrors(errorfields, errormessages);
