@@ -14,12 +14,8 @@ const initialState = {
     },
     clientinfo: {
         name: '',
-        address1: '',
-        address2: '',
         country: '',
-        statee: '',
         city: '',
-        zipcode: ''
     },
     purposeofvisit: {
         description: ''
@@ -33,7 +29,6 @@ const initialState = {
     },
     hoteldetails: {
         name: '',
-        address:'',
         staycost:'',
         billability:'',
         fromdate: moment().toDate(),
