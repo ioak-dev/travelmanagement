@@ -26,32 +26,13 @@ const ClientInfo = (props) =>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Address line 1*" name="address1" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("address1") > -1}/>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Address line 2" name="address2" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("address2") > -1}/>
-                </Grid>
-
-                <Grid item xs={6}>
                     <ArcTextField id={componentName} label="City*" name="city" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("city") > -1}/>
-                </Grid>
-                <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="State*" name="statee" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("statee") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
                     <ArcTextField id={componentName} label="Country*" name="country" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("country") > -1}/>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Zipcode / Pincode*" name="zipcode" handlechange={e => props.handlechange(e)}   {...props}
-                                  error={props.errorfields.indexOf("zipcode") > -1}/>
                 </Grid>
 
             </Grid>
@@ -71,7 +52,7 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('name','address1','country','statee','city','zipcode');
+    const errorfields = props.validateMandatoryFields('name','country','city');
     const errormessages = [];
 
     if (errorfields.length > 0) {

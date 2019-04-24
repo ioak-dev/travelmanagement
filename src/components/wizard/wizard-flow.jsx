@@ -15,12 +15,10 @@ function WizardFlow(props) {
                         <i className="material-icons">edit</i>Edit
                     </ArcButton>}
                 </Grid>
-                <Grid container item xs={6} justify="flex-end">
-                    <Hidden smDown>
-                        {props.saveforlater && <ArcButton variant="text" color="default" onClick={props.saveforlater}>
+                <Grid container item xs={6} justify="flex-end">                    
+                        {props.saveforlater && <Hidden smDown><ArcButton variant="text" color="default" onClick={props.saveforlater}>
                             <i className="material-icons">save_alt</i>Save for later
-                        </ArcButton>}
-                    </Hidden>
+                        </ArcButton></Hidden>}
                     &nbsp;&nbsp;
                     {props.nextpage && <ArcButton lighttext variant="contained" color="primary" onClick={props.nextpage}>
                         <i className="material-icons">skip_next</i>Next

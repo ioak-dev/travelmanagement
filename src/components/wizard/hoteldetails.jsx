@@ -15,7 +15,7 @@ const HotelDetails = (props) =>
         <form noValidate autoComplete="off">
             <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                 <Grid item xs={12}>
-                    <WizardFlow headline="Accommodation Details"
+                    <WizardFlow headline="Hotel and Accommodation"
                         previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
                 </Grid>
 
@@ -24,11 +24,11 @@ const HotelDetails = (props) =>
                 <br />
 
                 <Grid item xs={12}>
-                    <ArcTextField id={componentName} label="Hotel name*" name="name" handlechange={e => props.handlechange(e)}   {...props}
+                    <ArcTextField id={componentName} label="Hotel name" name="name" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("name") > -1}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <ArcTextField id={componentName} label="Hotel Address*" name="address" handlechange={e => props.handlechange(e)} multiline rows={3}  {...props}
+                    <ArcTextField id={componentName} label="Hotel Address" name="address" handlechange={e => props.handlechange(e)} multiline rows={3}  {...props}
                                   error={props.errorfields.indexOf("name") > -1}/>
                 </Grid>
 
@@ -42,7 +42,12 @@ const HotelDetails = (props) =>
                                       ampm={true} disablePast error={props.errorfields.indexOf("todate") > -1}/>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12}>
+                    <ArcTextField id={componentName} label="Total Stay Cost" name="staycost" handlechange={e => props.handlechange(e)}  {...props}
+                                error={props.errorfields.indexOf("staycost") > -1}/>
+                </Grid>
+
+                <Grid container  xs={12} justify="center">
                     <RadioGroup
                         aria-label="Billability"
                         name="billability"
@@ -54,11 +59,6 @@ const HotelDetails = (props) =>
                         <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
                     </RadioGroup>
                 </Grid>
-
-                <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Total Stay Cost*" name="staycost" handlechange={e => props.handlechange(e)}  {...props}
-                                  error={props.errorfields.indexOf("name") > -1}/>
-                </Grid>
             </Grid>
 
 
@@ -66,7 +66,11 @@ const HotelDetails = (props) =>
     </div>
 
 function previousPage(props) {
-    props.previousPage(1);
+    if(props.traveltype.type === 'international') {
+        props.previousPage(1);
+    } else {
+        props.previousPage(2);
+    }
 }
 
 function nextPage(props) {
@@ -76,7 +80,7 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('name','address','staycost','billability');
+    const errorfields = props.validateMandatoryFields('billability');
     const errormessages = [];
 
     if (errorfields.length > 0) {

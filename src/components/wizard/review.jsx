@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorMessage from "./errormessage";
-import ArcTextField from '../ui/elements/arc-text-field';
 import { Grid, Typography } from '@material-ui/core';
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 import ReviewItem from './review-item';
+import moment from 'moment';
+import ArcTextField from '../ui/elements/arc-text-field';
 
 const componentName = "review";
 
@@ -20,11 +21,30 @@ const Review = (props) =>
 
             <Grid item xs={12} container direction="column">
                 <Grid xs={12} container direction="row">
+                    <Typography variant="h6">Travel Type</Typography>
+                </Grid>
+                <ReviewItem name="Request Type" value={props.traveltype.type}/>
+            </Grid>
+
+            <br />
+
+            <Grid item xs={12} container direction="column">
+                <Grid xs={12} container direction="row">
                     <Typography variant="h6">Client Information</Typography>
                 </Grid>
-                <ReviewItem name="Name" value={props.clientinfo.name}/>
-                <ReviewItem name="Address1" value={props.clientinfo.address1}/>
-                <ReviewItem name="Address2" value={props.clientinfo.address2}/>
+                <ReviewItem name="Customer Name" value={props.clientinfo.name}/>
+                <ReviewItem name="City" value={props.clientinfo.city}/>
+                <ReviewItem name="Country" value={props.clientinfo.country}/>
+            </Grid>
+
+            <br />
+
+
+            <Grid item xs={12} container direction="column">
+                <Grid xs={12} container direction="row">
+                    <Typography variant="h6">Purpose of visit</Typography>
+                </Grid>
+                <ReviewItem name="Project Description" value={props.purposeofvisit.description}/>
             </Grid>
 
             <br />
@@ -33,17 +53,62 @@ const Review = (props) =>
                 <Grid xs={12} container direction="row">
                     <Typography variant="h6">Flight Details</Typography>
                 </Grid>
-                <ReviewItem name="Onward journey" value="Bangalore"/>
+                <ReviewItem name="Sector1" value={props.flightdetails.sector1}/>
+                <ReviewItem name="Sector2" value={props.flightdetails.sector2}/>
+                <ReviewItem name="Travel Date" value={moment(props.flightdetails.fromdate).toLocaleString()}/>
+                <ReviewItem name="Return Date" value={moment(props.flightdetails.todate).toLocaleString()}/>
+                <ReviewItem name="Billability" value={props.flightdetails.billability}/>
+            </Grid>
+
+            <br />
+
+            {props.traveltype.type === 'international' &&
+                <div>
+                    <Grid item xs={12} container direction="column">
+                        <Grid xs={12} container direction="row">
+                            <Typography variant="h6">Visa Requirements</Typography>
+                        </Grid>
+                        <ReviewItem name="Visa Required" value={props.visa.required}/>
+                        {props.visa.required === 'yes' &&
+                            <ReviewItem name="Visa Details" value={props.visa.remark}/>
+                        }
+                    </Grid>
+                    <br />
+                </div>
+            }
+
+            <Grid item xs={12} container direction="column">
+                <Grid xs={12} container direction="row">
+                    <Typography variant="h6">Hotel and Accommodation</Typography>
+                </Grid>
+                <ReviewItem name="Hotel Name" value={props.hoteldetails.name}/>
+                <ReviewItem name="Address" value={props.hoteldetails.address}/>
+                <ReviewItem name="Check-in Time" value={moment(props.hoteldetails.fromdate).toLocaleString()}/>
+                <ReviewItem name="Check-out Time" value={moment(props.hoteldetails.todate).toLocaleString()}/>
+                <ReviewItem name="Cost of stay" value={props.flightdetails.staycost}/>
+                <ReviewItem name="Billability" value={props.flightdetails.billability}/>
             </Grid>
 
             <br />
 
             <Grid item xs={12} container direction="column">
                 <Grid xs={12} container direction="row">
-                    <Typography variant="h6">Purpose of visit</Typography>
+                    <Typography variant="h6">Local Transportation</Typography>
                 </Grid>
-                <ReviewItem name="Project Description" value={props.purposeofvisit.description}/>
+                <ReviewItem name="Sector1" value={props.localtransportdetails.sector1}/>
+                <ReviewItem name="Sector2" value={props.localtransportdetails.sector2}/>
+                <ReviewItem name="Onward Date" value={moment(props.localtransportdetails.fromdate).toLocaleString()}/>
+                <ReviewItem name="Return Date" value={moment(props.localtransportdetails.todate).toLocaleString()}/>
+                <ReviewItem name="Billability" value={props.flightdetails.billability}/>
             </Grid>
+
+            <br />
+
+            <Grid item xs={12}>
+                <ArcTextField id={componentName} label="Remarks" name="remarks1" handlechange={e => props.handlechange(e)}   {...props}
+                            multiline rows="5" error={props.errorfields.indexOf("remarks1") > -1}/>
+            </Grid>
+
         </form>
     </div>
 
@@ -74,8 +139,13 @@ function validate(props) {
 }
 
 Review.protoTypes = {
+    traveltype: PropTypes.object,
     clientinfo: PropTypes.object,
-    purposeofvisit: PropTypes.object
+    purposeofvisit: PropTypes.object,
+    flightdetails: PropTypes.object,
+    hoteldetails: PropTypes.object,
+    localtransportdetails: PropTypes.object,
+    review: PropTypes.object
 }
 
 export default withWizard(Review, componentName)

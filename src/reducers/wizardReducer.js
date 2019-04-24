@@ -8,7 +8,7 @@ import {
 import moment from 'moment';
 
 const initialState = {
-    currentpage: 1,
+    currentpage: 5,
     traveltype: {
         type: null
     },
@@ -49,6 +49,13 @@ const initialState = {
         remarks1:'',
         remarks2:''
     },
+    visa: {
+        required: '',
+        remark: ''
+    },
+    review: {
+        remarks1: ''
+    }
 }
 
 export default function(state = initialState, action) {

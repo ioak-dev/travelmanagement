@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { fetchWizard } from '../../actions/wizardActions';
 import Purposeofvisit from "./purposeofvisit.jsx";
 import Flightdetails from "./flightdetails.jsx";
+import Visa from "./visa.jsx"
 import Hoteldetails from "./hoteldetails.jsx"
 import Localtransportdetails from "./localtransportdetails.jsx"
 import Review from "./review.jsx"
@@ -24,9 +25,10 @@ class Wizard extends React.Component {
                 {this.props.currentpage === 2 && <Clientinfo />}
                 {this.props.currentpage === 3 && <Purposeofvisit />}
                 {this.props.currentpage === 4 && <Flightdetails />}
-                {this.props.currentpage === 5 && <Hoteldetails />}
-                {this.props.currentpage === 6 && <Localtransportdetails />}
-                {this.props.currentpage === 7 && <Review />}
+                {this.props.currentpage === 5 && <Visa />}
+                {this.props.currentpage === 6 && <Hoteldetails />}
+                {this.props.currentpage === 7 && <Localtransportdetails />}
+                {this.props.currentpage === 8 && <Review />}
             </div>;
 
         return (

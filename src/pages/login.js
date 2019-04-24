@@ -2,29 +2,22 @@ import React from 'react'
 import { Grid, Button, Typography, Fab } from '@material-ui/core';
 import ArcButton from '../components/ui/elements/arc-button';
 
+import { connect } from 'react-redux';
+import { fetchLoggedUser, reloadLoggedUser } from '../actions/userActions';
+
 class Login extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {loggedInUserEmail: null};
 
         this.logout.bind(this);
     }
 
     componentDidMount() {
-        this.initialize();
-    }
-
-    initialize() {
-        if (sessionStorage.getItem('userSigninName')) {
-            this.setState({loggedInUserEmail: sessionStorage.getItem('userSigninName')});
-        } else {
-            this.setState({loggedInUserEmail: null});
-        }
     }
 
     render() {
-        if (!this.state.loggedInUserEmail) {
+        if (!this.props.loggedUser.loggedin) {
             return (
                 <div className="arc-root">
                     <Grid container direction="column" justify="center" alignItems="center"  spacing={24}>
@@ -43,7 +36,7 @@ class Login extends React.Component {
                     <Grid container direction="column" justify="center" alignItems="center" spacing={24}>
                         <Grid item xs={12}>
                             <Typography variant="subtitle1" inline>You are logged in as </Typography>
-                            <Typography variant="subtitle1" color="primary" inline>{this.state.loggedInUserEmail}</Typography>
+                            <Typography variant="subtitle1" color="primary" inline>{this.props.loggedUser.displayname}</Typography>
                             
                         </Grid>
                         <Grid item xs={12}>
@@ -60,7 +53,12 @@ class Login extends React.Component {
     logout() {
         sessionStorage.clear();
         localStorage.clear();
-        this.initialize();
+        this.props.reloadLoggedUser(null);
     }
 }
-export default Login;
+
+const mapStateToProps = state => ({
+    loggedUser: state.user.loggedUser
+})
+
+export default connect(mapStateToProps, {fetchLoggedUser, reloadLoggedUser}) (Login);

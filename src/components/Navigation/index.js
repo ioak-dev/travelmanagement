@@ -6,9 +6,11 @@ import Hidden from '@material-ui/core/Hidden';
 import AppBar from '@material-ui/core/AppBar';
 import { Toolbar, IconButton, ListItemIcon, ListItem, List, Drawer, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import ArcButtonNavWrapper from './arc-button-nav-wrapper.jsx';
+
+import { connect } from 'react-redux';
+import { fetchLoggedUser, reloadLoggedUser } from '../../actions/userActions';
 
 const arcNavTheme = createMuiTheme({
     typography: {
@@ -22,6 +24,9 @@ const arcNavTheme = createMuiTheme({
       secondary: {
           main: '#D8C568'
           // FFCA3A
+      },
+      textSecondary: {
+        color: '#FFFFFF'
       }
     }
   });
@@ -53,7 +58,9 @@ class Navigation extends React.Component {
       }
     }
 
-    componentWillMount() {
+    componentDidMount() {
+      this.props.reloadLoggedUser(sessionStorage.getItem('userSigninName'));
+      // this.props.fetchLoggedUser();
     }
 
     componentWillUnmount() {
@@ -65,6 +72,10 @@ class Navigation extends React.Component {
         return 'secondary';
       }
       return 'inherit';
+    }
+
+    componentWillReceiveProps(nextProps) {
+      console.log(nextProps);
     }
 
     // getMenuItemVariant(path) {
@@ -152,9 +163,12 @@ class Navigation extends React.Component {
               
               {/* Right icons */}
               <div style={styles.toolbarButtons}></div>
-                <IconButton color="inherit" aria-label="Account" href="/login">
-                  <i className="material-icons">account_circle</i>
-                </IconButton>
+              <Hidden smDown>
+                <Typography variant="body1" color="textSecondary">{this.props.loggedUser.displayname}</Typography>
+              </Hidden>
+              <IconButton color="inherit" aria-label="Account" href="/login">
+                <i className="material-icons">account_circle</i>
+              </IconButton>
             </Toolbar>
           </AppBar>
         </MuiThemeProvider>
@@ -162,4 +176,8 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation;
+const mapStateToProps = state => ({
+    loggedUser: state.user.loggedUser
+})
+
+export default connect(mapStateToProps, {fetchLoggedUser, reloadLoggedUser}) (Navigation);

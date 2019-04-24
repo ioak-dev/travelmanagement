@@ -41,16 +41,6 @@ const LocalTransportDetails = (props) =>
                                       ampm={true} disablePast error={props.errorfields.indexOf("dateandtimereturn") > -1}/>
                 </Grid>
 
-                <Grid item xs={12}>
-                    <ArcTextField id={componentName} label="Remarks on Dining Allowance" name="remarks1" handlechange={e => props.handlechange(e)} multiline rows={3}  {...props}
-                                  error={props.errorfields.indexOf("remarks1") > -1}/>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <ArcTextField id={componentName} label="Remarks on Travel Allowance" name="remarks2" handlechange={e => props.handlechange(e)} multiline rows={3} {...props}
-                                  error={props.errorfields.indexOf("remarks2") > -1}/>
-                </Grid>
-
                 <Grid item xs={6}>
                     <RadioGroup
                         aria-label="Billability"

@@ -121,8 +121,10 @@ const withWizard = (WrappedComponent, dataref) => {
         clientinfo:  state.wizard.clientinfo,
         purposeofvisit:  state.wizard.purposeofvisit,
         flightdetails:  state.wizard.flightdetails,
+        visa: state.wizard.visa,
         hoteldetails: state.wizard.hoteldetails,
-        localtransportdetails: state.wizard.localtransportdetails
+        localtransportdetails: state.wizard.localtransportdetails,
+        review: state.wizard.review
     })
 
     return connect(mapStateToProps, { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard })(Wrapper);

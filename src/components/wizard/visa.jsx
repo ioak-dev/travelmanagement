@@ -5,16 +5,16 @@ import ArcTextField from '../ui/elements/arc-text-field';
 import {FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@material-ui/core';
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
-import ArcDatetimeField from "../ui/elements/arc-datetime-field";
 
-const componentName = "traveltype";
+const componentName = "visa";
 
-const Traveltype = (props) =>
+const Visa = (props) =>
     <div className="arc-root">
         <form noValidate autoComplete="off">
             <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                 <Grid item xs={12}>
-                    <WizardFlow nextpage={nextPage.bind(this, props)} />
+                    <WizardFlow headline="Visa Requirements"
+                        previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
                 </Grid>
 
                 <ErrorMessage errors={props.errormessages} />
@@ -25,23 +25,31 @@ const Traveltype = (props) =>
             <Grid container direction="column" justify="center" alignItems="center"  spacing={8}>           
 
                 <Grid item xs={12}>
-                    <Typography variant="h6">What type of travel request would you like to create?</Typography>
+                    <Typography variant="body1">Do you have any visa requirements and would you like us to assist with visa application?</Typography>
                 </Grid>
 
                 <Grid item xs={12}>
                     <RadioGroup
-                        aria-label="Travel type"
-                        name="type"
-                        value={props[componentName].type}
+                        aria-label="Visa requirement"
+                        name="required"
+                        value={props[componentName].required}
                         onChange={props.handlechange}
                         row
                     >
-                        <FormControlLabel value="domestic" control={<Radio />} label="Domestic" />
-                        <FormControlLabel value="international" control={<Radio />} label="International" />
+                        <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                        <FormControlLabel value="no" control={<Radio />} label="No" />
                     </RadioGroup>
                 </Grid>
-
             </Grid>
+
+            {props.visa.required === 'yes' &&
+                <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
+                    <Grid item xs={12}>
+                        <ArcTextField id={componentName} label="Visa requirement*" name="remark" handlechange={e => props.handlechange(e)} multiline rows={5}  {...props}
+                                    error={props.errorfields.indexOf("remark") > -1}/>
+                    </Grid>
+                </Grid>
+            }
 
 
         </form>
@@ -58,7 +66,7 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('type');
+    const errorfields = props.validateMandatoryFields('required');
     const errormessages = [];
 
     if (errorfields.length > 0) {
@@ -72,8 +80,8 @@ function validate(props) {
 
 
 
-Traveltype.protoTypes = {
-    traveltype: PropTypes.object
+Visa.protoTypes = {
+    visa: PropTypes.object
 }
 
-export default withWizard(Traveltype, componentName)
+export default withWizard(Visa, componentName)

@@ -23,12 +23,12 @@ const FlightDetails = (props) =>
 
                 <br />
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Onward Flight*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
+                    <ArcTextField id={componentName} label="Onward Flight Sector*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("sector1") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Return Flight*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
+                    <ArcTextField id={componentName} label="Return Flight Sector*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("sector2") > -1}/>
                 </Grid>
 
@@ -70,7 +70,12 @@ function previousPage(props) {
 
 function nextPage(props) {
     if (validate(props).length === 0) {
-        props.nextPage(1);
+        console.log(props.traveltype.type);
+        if(props.traveltype.type === 'international') {
+            props.nextPage(1);
+        } else {
+            props.nextPage(2);
+        }
     }
 }
 
@@ -102,8 +107,8 @@ function validate(props) {
 }
 
 
-
 FlightDetails.protoTypes = {
+    traveltype: PropTypes.object,
     hoteldetails: PropTypes.object
 }
 
