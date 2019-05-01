@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorMessage from "./errormessage";
 import ArcTextField from '../ui/elements/arc-text-field';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 
@@ -12,19 +12,11 @@ const Purposeofvisit = (props) =>
     <div className="arc-root">
         <form noValidate autoComplete="off">
                 <Grid item xs={12}>
-                    <WizardFlow previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
+                    <WizardFlow headline="Purpose of visit" 
+                        previouspage={previousPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} nextpage={nextPage.bind(this, props)} />
                 </Grid>
                 
                 <ErrorMessage errors={props.errormessages} />
-
-                <Grid item xs={12}>
-                    <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
-                        <Grid item xs={12}>                            
-                            <Typography variant="h5">What is the purpose of your visit?</Typography>
-                            <Typography variant="subtitle1">Describe in detail about the project details and the agenda</Typography>
-                        </Grid>                           
-                    </Grid>
-                </Grid>
 
                 <Grid item xs={12}>
                     <ArcTextField id={componentName} label="Project details*" name="description" handlechange={e => props.handlechange(e)}  multiline rows={5} {...props}

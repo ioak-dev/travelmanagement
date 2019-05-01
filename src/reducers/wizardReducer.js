@@ -1,6 +1,7 @@
 import {
     GO_TO_PAGE,
     FETCH_WIZARD,
+    UPDATE_WIZARD,
     UPDATE_TRAVELTYPE,
     UPDATE_CLIENTINFO,
     UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_HOTELDETAILS, UPDATE_LOCALTRANSPORTDETAILS
@@ -8,7 +9,11 @@ import {
 import moment from 'moment';
 
 const initialState = {
-    currentpage: 5,
+    currentpage: 2,
+    status: {
+        name: 'DRAFT',
+        description: 'Draft'
+    },
     traveltype: {
         type: null
     },
@@ -49,7 +54,10 @@ const initialState = {
         remark: ''
     },
     review: {
-        remarks1: ''
+        applicantRemarks: '',
+        remarksL1: '',
+        remarksL2: '',
+        remarksAdmin: ''
     }
 }
 
@@ -61,6 +69,27 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 currentpage: action.currentpage
+            }
+        case UPDATE_WIZARD:
+            console.log("reducer UPDATE_WIZARD");
+            console.log(action.payload);
+            let currentpage = state.currentpage;
+            if (action.payload.currentpage) {
+                currentpage = action.payload.currentpage;
+            }
+            return {
+                ...state,
+                wizardid: action.payload.wizardid,
+                createdBy: action.payload.createdBy,
+                currentpage: currentpage,
+                status: action.payload.status,
+                traveltype: action.payload.traveltype,
+                clientinfo: action.payload.clientinfo,
+                purposeofvisit: action.payload.purposeofvisit,
+                flightdetails: action.payload.flightdetails,
+                hoteldetails: action.payload.hoteldetails,
+                localtransportdetails: action.payload.localtransportdetails,
+                review: action.payload.review
             }
         case FETCH_WIZARD:
             console.log("reducer FETCH_WIZARD");

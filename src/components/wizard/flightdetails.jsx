@@ -23,12 +23,12 @@ const FlightDetails = (props) =>
 
                 <br />
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Onward Flight Sector*" name="sector1" handlechange={e => props.handlechange(e)}   {...props}
+                    <ArcTextField id={componentName} label="Onward Flight Sector*" name="sector1" {...props} handlechange={e => props.handlechange(e)}
                                   error={props.errorfields.indexOf("sector1") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ArcTextField id={componentName} label="Return Flight Sector*" name="sector2" handlechange={e => props.handlechange(e)}   {...props}
+                    <ArcTextField id={componentName} label="Return Flight Sector*" name="sector2" {...props} handlechange={e => props.handlechange(e)}
                                   error={props.errorfields.indexOf("sector2") > -1}/>
                 </Grid>
 
@@ -42,7 +42,7 @@ const FlightDetails = (props) =>
                 </Grid>
 
 
-                <Grid item xs={6}>
+                <Grid container item xs={12} justify="flex-end">
                     <RadioGroup
                         aria-label="Billability"
                         name="billability"
@@ -54,8 +54,6 @@ const FlightDetails = (props) =>
                         <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
                     </RadioGroup>
                 </Grid>
-
-                <Grid item xs={6}></Grid>
 
 
             </Grid>
@@ -71,7 +69,7 @@ function previousPage(props) {
 function nextPage(props) {
     if (validate(props).length === 0) {
         console.log(props.traveltype.type);
-        if(props.traveltype.type === 'international') {
+        if(props.traveltype.type === 'International') {
             props.nextPage(1);
         } else {
             props.nextPage(2);

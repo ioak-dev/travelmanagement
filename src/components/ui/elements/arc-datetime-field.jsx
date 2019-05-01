@@ -18,7 +18,6 @@ function ArcDatetimeField(props) {
                     variant="filled"
                     fullWidth
                     error={error}
-                    {...others}
                 />
             </div>
         </MuiPickersUtilsProvider>

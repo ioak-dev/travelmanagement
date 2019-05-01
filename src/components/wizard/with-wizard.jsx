@@ -1,12 +1,12 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
-import { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard } from '../../actions/wizardActions';
+import { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard, submitWizard } from '../../actions/wizardActions';
 import moment from 'moment';
 
 const withWizard = (WrappedComponent, dataref) => {
     class Wrapper extends Component {
         componentDidMount() {
-            this.props.fetchWizard("1");
+            this.props.fetchWizard();
         }
 
         componentWillReceiveProps(nextProps) {
@@ -30,6 +30,7 @@ const withWizard = (WrappedComponent, dataref) => {
 
             this.handlechange = this.handlechange.bind(this);
             this.handledatechange = this.handledatechange.bind(this);
+            this.submit = this.submit.bind(this);
         }
 
 
@@ -81,6 +82,23 @@ const withWizard = (WrappedComponent, dataref) => {
             this.props.goToPreviousPage(this.props.currentpage, count);
         }
 
+        submit(userId) {
+            this.props.submitWizard(userId, {
+                id: this.props.wizardid,
+                createdBy: this.props.createdBy,
+                traveltype: this.props.traveltype,
+                clientinfo: this.props.clientinfo,
+                purposeofvisit: this.props.purposeofvisit,
+                flightdetails: this.props.flightdetails,
+                hoteldetails: this.props.hoteldetails,
+                localtransportdetails: this.props.localtransportdetails,
+                visa: this.props.visa,
+                review: this.state.review,
+                status: this.props.status.name
+            });
+            this.props.goToNextPage(this.props.currentpage, 1);
+        }
+
         saveForLater() {
             console.log(this.state);
             // call action to save
@@ -108,14 +126,15 @@ const withWizard = (WrappedComponent, dataref) => {
                     nextPage={this.nextPage.bind(this)}
                     previousPage={this.previousPage.bind(this)}
                     saveForLater={this.saveForLater.bind(this)}
+                    submit={this.submit.bind(this)}
                     validateMandatoryFields={this.validateMandatoryFields.bind(this)}
                     {...this.props} {...this.state} />
             );
         }
-
     }
 
     const mapStateToProps = state => ({
+        wizardid: state.wizard.wizardid,
         currentpage: state.wizard.currentpage,
         traveltype:  state.wizard.traveltype,
         clientinfo:  state.wizard.clientinfo,
@@ -124,10 +143,12 @@ const withWizard = (WrappedComponent, dataref) => {
         visa: state.wizard.visa,
         hoteldetails: state.wizard.hoteldetails,
         localtransportdetails: state.wizard.localtransportdetails,
-        review: state.wizard.review
+        createdBy: state.wizard.createdBy,
+        review: state.wizard.review,
+        status: state.wizard.status
     })
 
-    return connect(mapStateToProps, { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard })(Wrapper);
+    return connect(mapStateToProps, { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard, submitWizard })(Wrapper);
 }
 
 

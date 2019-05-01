@@ -29,7 +29,7 @@ const HotelDetails = (props) =>
                 </Grid>
                 <Grid item xs={12}>
                     <ArcTextField id={componentName} label="Hotel Address" name="address" handlechange={e => props.handlechange(e)} multiline rows={3}  {...props}
-                                  error={props.errorfields.indexOf("name") > -1}/>
+                                  error={props.errorfields.indexOf("address") > -1}/>
                 </Grid>
 
                 <Grid item xs={6}>
@@ -47,7 +47,7 @@ const HotelDetails = (props) =>
                                 error={props.errorfields.indexOf("staycost") > -1}/>
                 </Grid>
 
-                <Grid container  xs={12} justify="center">
+                <Grid container item xs={12} justify="flex-end">
                     <RadioGroup
                         aria-label="Billability"
                         name="billability"

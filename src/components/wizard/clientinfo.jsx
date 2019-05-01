@@ -58,11 +58,6 @@ function validate(props) {
     if (errorfields.length > 0) {
         errormessages.push("Mandatory fields missing");
     }
-    // Series of business validations
-    if (isNaN(props.clientinfo.zipcode)) {
-        errorfields.push("zipcode");
-        errormessages.push("Not a valid Zip code");
-    }
 
     props.reportErrors(errorfields, errormessages);
 

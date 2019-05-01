@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
     FETCH_LOGGED_USER,
     RELOAD_LOGGED_USER
@@ -12,14 +13,15 @@ export const fetchLoggedUser = () => dispatch => {
 export const reloadLoggedUser = (email) => dispatch => {
     if (email) {
         console.log('fetching HTTP');
-        fetch('http://localhost:8080/person/email/' + email)
-        .then((res) => res.json())
+        axios.get('http://localhost:8080/person/email/' + email)
         .then((user) => {
+            console.log(user.data);
             dispatch({
                 type: RELOAD_LOGGED_USER,
                 payload: {
-                    email: user.email,
-                    displayname: user.name,
+                    email: user.data.email,
+                    displayname: user.data.name,
+                    id: user.data.id,
                     loggedin: true
                 }
             })

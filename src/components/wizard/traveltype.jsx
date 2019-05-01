@@ -36,8 +36,8 @@ const Traveltype = (props) =>
                         onChange={props.handlechange}
                         row
                     >
-                        <FormControlLabel value="domestic" control={<Radio />} label="Domestic" />
-                        <FormControlLabel value="international" control={<Radio />} label="International" />
+                        <FormControlLabel value="Domestic" control={<Radio />} label="Domestic" />
+                        <FormControlLabel value="International" control={<Radio />} label="International" />
                     </RadioGroup>
                 </Grid>
 

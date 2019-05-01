@@ -1,15 +1,46 @@
+import axios from 'axios';
 import {
     GO_TO_PAGE,
     FETCH_WIZARD,
-    UPDATE_TRAVELTYPE,
-    UPDATE_CLIENTINFO,
-    UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_HOTELDETAILS, UPDATE_LOCALTRANSPORTDETAILS
+    UPDATE_WIZARD
 } from './types';
 
-export const fetchWizard = (id) => dispatch => {
+import { SECTION_02, SECTION_REVIEW } from '../components/wizard/section-types'
+
+export const reloadWizard = (id, loggedInUserId) => dispatch => {
+    console.log('fetching HTTP');
+    console.log(id, loggedInUserId);
+    axios.get('http://localhost:8080/wizard/' + id)
+    .then((response) => {
+        const wizard = response.data;
+        let currentpage = SECTION_REVIEW;
+
+        if (loggedInUserId === wizard.createdBy && wizard.status.name === 'DRAFT') {
+            currentpage = SECTION_02;
+        }
+
+        dispatch({
+            type: UPDATE_WIZARD,
+            payload: {
+                wizardid: wizard.id,
+                currentpage: currentpage,
+                status: wizard.status,
+                createdBy: wizard.createdBy,
+                traveltype: wizard.traveltype,
+                clientinfo: wizard.clientinfo,
+                purposeofvisit: wizard.purposeofvisit,
+                flightdetails: wizard.flightdetails,
+                hoteldetails: wizard.hoteldetails,
+                localtransportdetails: wizard.localtransportdetails,
+                review: wizard.review
+            }
+        })
+    });
+}
+
+export const fetchWizard = () => dispatch => {
     dispatch({
-        type: FETCH_WIZARD,
-        id: id
+        type: FETCH_WIZARD
     })
 }
 
@@ -34,51 +65,10 @@ export const goToFirstPage = () => dispatch => {
     })
 }
 
-export const updateTravelType = (id, data) => dispatch => {
+export const goToPage = (page) => dispatch => {
     dispatch({
-        type: UPDATE_TRAVELTYPE,
-        id: id,
-        payload: data
-    })
-}
-
-export const updateClientinfo = (id, data) => dispatch => {
-    dispatch({
-        type: UPDATE_CLIENTINFO,
-        id: id,
-        payload: data
-    })
-}
-
-export const updatePurposeofvisit = (id, data) => dispatch => {
-    dispatch({
-        type: UPDATE_PURPOSEOFVISIT,
-        id: id,
-        payload: data
-    })
-}
-
-export const updateFlightdetails = (id, data) => dispatch => {
-    dispatch({
-        type: UPDATE_FLIGHTDETAILS,
-        id: id,
-        payload: data
-    })
-}
-
-export const updateHoteldetails = (id, data) => dispatch => {
-    dispatch({
-        type: UPDATE_HOTELDETAILS,
-        id: id,
-        payload: data
-    })
-}
-
-export const updateLocaltransportdetails = (id, data) => dispatch => {
-    dispatch({
-        type: UPDATE_LOCALTRANSPORTDETAILS,
-        id: id,
-        payload: data
+        type: GO_TO_PAGE,
+        currentpage: page
     })
 }
 
@@ -88,4 +78,32 @@ export const updateWizard = (type, id, data) => dispatch => {
         id: id,
         payload: data
     })
+}
+
+export const submitWizard = (userId, data) => dispatch => {
+    console.log(data);
+    axios.put('http://localhost:8080/wizard/' + userId, data, null)
+        .then((response) => {
+
+            axios.post('http://localhost:8080/wizard/' + response.data.id + '/submit/' + userId)
+            .then((response) => {
+            
+                const wizard = response.data;
+                dispatch({
+                    type: UPDATE_WIZARD,
+                    payload: {
+                        wizardid: wizard.id,
+                        status: wizard.status,
+                        createdBy: wizard.createdBy,
+                        traveltype: wizard.traveltype,
+                        clientinfo: wizard.clientinfo,
+                        purposeofvisit: wizard.purposeofvisit,
+                        flightdetails: wizard.flightdetails,
+                        hoteldetails: wizard.hoteldetails,
+                        localtransportdetails: wizard.localtransportdetails,
+                        review: wizard.review
+                    }
+                })
+            })
+        })
 }

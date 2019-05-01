@@ -41,7 +41,7 @@ const LocalTransportDetails = (props) =>
                                       ampm={true} disablePast error={props.errorfields.indexOf("dateandtimereturn") > -1}/>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid container item xs={12} justify="flex-end">
                     <RadioGroup
                         aria-label="Billability"
                         name="billability"
@@ -53,9 +53,6 @@ const LocalTransportDetails = (props) =>
                         <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
                     </RadioGroup>
                 </Grid>
-
-                <Grid item xs={6}></Grid>
-
 
             </Grid>
 

@@ -10,6 +10,7 @@ import ViewRequests from './pages/viewrequests';
 import Navigation from './components/Navigation';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import ManageRequests from './pages/managerequests';
 
 const arcTheme = createMuiTheme({
     typography: {
@@ -20,7 +21,7 @@ const arcTheme = createMuiTheme({
           main: '#3F517C'          
       },
       secondary: {
-          main: '#A38F2D'
+          main: '#B39F39'
       }
     }
   });
@@ -44,6 +45,7 @@ class App extends Component {
           <Route path="/login" component={Login} />
           <Route path="/createrequest" component={CreateRequest} />
           <Route path="/viewrequests" component={ViewRequests} />
+          <Route path="/controlrequests" component={ManageRequests} />
         </Switch>
       </MuiThemeProvider>
     );

@@ -1,9 +1,8 @@
 import React from 'react'
-import Login from './login'
-import Wizard from '../components/wizard';
+import Login from './login';
+import View from '../components/view';
 
-class CreateRequest extends React.Component {
-    
+class ManageRequests extends React.Component {
     constructor(props) {
         super(props);
         this.state = {loggedInUserEmail: null};
@@ -22,9 +21,10 @@ class CreateRequest extends React.Component {
             );
         } else {
             return (
-                <Wizard />
+                <View type='REVIEWER' history={this.props.history} />
             );
         }
     }
 }
-export default CreateRequest
+
+export default ManageRequests

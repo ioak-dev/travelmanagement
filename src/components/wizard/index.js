@@ -3,7 +3,7 @@ import Traveltype from './traveltype.jsx';
 import Clientinfo from './clientinfo.jsx';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchWizard } from '../../actions/wizardActions';
+import { fetchWizard, goToPage } from '../../actions/wizardActions';
 import Purposeofvisit from "./purposeofvisit.jsx";
 import Flightdetails from "./flightdetails.jsx";
 import Visa from "./visa.jsx"
@@ -12,23 +12,31 @@ import Localtransportdetails from "./localtransportdetails.jsx"
 import Review from "./review.jsx"
 import { Grid, Hidden } from '@material-ui/core';
 
+import { SECTION_FIRST, SECTION_02, SECTION_03, SECTION_04, SECTION_05, SECTION_06, SECTION_07, SECTION_REVIEW, SECTION_OUTCOME_SUBMIT } from '../wizard/section-types';
+import OutcomeSubmit from './outcome-submit.jsx';
+
 class Wizard extends React.Component {
 
-    componentWillMount() {
-        this.props.fetchWizard(this.props.id);
+    componentDidMount() {
+        this.props.fetchWizard();
+
+        if (!this.props.id) {
+            this.props.goToPage(SECTION_FIRST);
+        }
     }
 
     render() {
         const wizardPages =
             <div>
-                {this.props.currentpage === 1 && <Traveltype />}
-                {this.props.currentpage === 2 && <Clientinfo />}
-                {this.props.currentpage === 3 && <Purposeofvisit />}
-                {this.props.currentpage === 4 && <Flightdetails />}
-                {this.props.currentpage === 5 && <Visa />}
-                {this.props.currentpage === 6 && <Hoteldetails />}
-                {this.props.currentpage === 7 && <Localtransportdetails />}
-                {this.props.currentpage === 8 && <Review />}
+                {this.props.currentpage === SECTION_FIRST && <Traveltype />}
+                {this.props.currentpage === SECTION_02 && <Clientinfo />}
+                {this.props.currentpage === SECTION_03 && <Purposeofvisit />}
+                {this.props.currentpage === SECTION_04 && <Flightdetails />}
+                {this.props.currentpage === SECTION_05 && <Visa />}
+                {this.props.currentpage === SECTION_06 && <Hoteldetails />}
+                {this.props.currentpage === SECTION_07 && <Localtransportdetails />}
+                {this.props.currentpage === SECTION_REVIEW && <Review loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_OUTCOME_SUBMIT && <OutcomeSubmit />}
             </div>;
 
         return (
@@ -53,13 +61,16 @@ class Wizard extends React.Component {
 }
 
 Wizard.protoTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     fetchWizard: PropTypes.func.isRequired,
-    currentpage: PropTypes.number
+    goToPage: PropTypes.func.isRequired,
+    currentpage: PropTypes.number,
+    status: PropTypes.string,
 }
 
 const mapStateToProps = state => ({
-    currentpage:  state.wizard.currentpage
+    currentpage:  state.wizard.currentpage,
+    loggedUser: state.user.loggedUser
 })
 
-export default connect( mapStateToProps, { fetchWizard } )(Wizard)
+export default connect( mapStateToProps, { fetchWizard, goToPage } )(Wizard)

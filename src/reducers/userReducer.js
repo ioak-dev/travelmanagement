@@ -5,6 +5,7 @@ import {
 
 const initialState = {
     loggedUser: {
+        id: '',
         email: '',
         loggedin: false,
         displayname: ''

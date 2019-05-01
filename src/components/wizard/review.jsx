@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorMessage from "./errormessage";
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Modal, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button } from '@material-ui/core';
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 import ReviewItem from './review-item';
@@ -19,8 +19,16 @@ const Review = (props) =>
 
                 <ErrorMessage errors={props.errormessages} />
 
+            {props.wizardid && 
+            <div>
+                <Grid item xs={12} container direction="column" align="center">
+                    <Typography variant="h4">{props.wizardid}</Typography>
+                </Grid>
+                <br />
+            </div>}
+
             <Grid item xs={12} container direction="column">
-                <Grid xs={12} container direction="row">
+                <Grid xs={12} container item direction="row">
                     <Typography variant="h6">Travel Type</Typography>
                 </Grid>
                 <ReviewItem name="Request Type" value={props.traveltype.type}/>
@@ -29,7 +37,7 @@ const Review = (props) =>
             <br />
 
             <Grid item xs={12} container direction="column">
-                <Grid xs={12} container direction="row">
+                <Grid xs={12} container item direction="row">
                     <Typography variant="h6">Client Information</Typography>
                 </Grid>
                 <ReviewItem name="Customer Name" value={props.clientinfo.name}/>
@@ -41,7 +49,7 @@ const Review = (props) =>
 
 
             <Grid item xs={12} container direction="column">
-                <Grid xs={12} container direction="row">
+                <Grid xs={12} container item direction="row">
                     <Typography variant="h6">Purpose of visit</Typography>
                 </Grid>
                 <ReviewItem name="Project Description" value={props.purposeofvisit.description}/>
@@ -50,7 +58,7 @@ const Review = (props) =>
             <br />
 
             <Grid item xs={12} container direction="column">
-                <Grid xs={12} container direction="row">
+                <Grid xs={12} container item direction="row">
                     <Typography variant="h6">Flight Details</Typography>
                 </Grid>
                 <ReviewItem name="Sector1" value={props.flightdetails.sector1}/>
@@ -65,7 +73,7 @@ const Review = (props) =>
             {props.traveltype.type === 'international' &&
                 <div>
                     <Grid item xs={12} container direction="column">
-                        <Grid xs={12} container direction="row">
+                        <Grid xs={12} container item direction="row">
                             <Typography variant="h6">Visa Requirements</Typography>
                         </Grid>
                         <ReviewItem name="Visa Required" value={props.visa.required}/>
@@ -78,7 +86,7 @@ const Review = (props) =>
             }
 
             <Grid item xs={12} container direction="column">
-                <Grid xs={12} container direction="row">
+                <Grid xs={12} container item direction="row">
                     <Typography variant="h6">Hotel and Accommodation</Typography>
                 </Grid>
                 <ReviewItem name="Hotel Name" value={props.hoteldetails.name}/>
@@ -92,7 +100,7 @@ const Review = (props) =>
             <br />
 
             <Grid item xs={12} container direction="column">
-                <Grid xs={12} container direction="row">
+                <Grid xs={12} container item direction="row">
                     <Typography variant="h6">Local Transportation</Typography>
                 </Grid>
                 <ReviewItem name="Sector1" value={props.localtransportdetails.sector1}/>
@@ -104,23 +112,50 @@ const Review = (props) =>
 
             <br />
 
-            <Grid item xs={12}>
-                <ArcTextField id={componentName} label="Remarks" name="remarks1" handlechange={e => props.handlechange(e)}   {...props}
-                            multiline rows="5" error={props.errorfields.indexOf("remarks1") > -1}/>
+
+            <Grid item xs={12} container direction="column">
+                <Grid xs={12} container item direction="row">
+                    <Typography variant="h6">Additional Remarks / Comments</Typography>
+                </Grid>
+                
+                {props.status.name !== 'DRAFT' && props.review.applicantRemarks && <ReviewItem name="Remarks from Applicant" value={props.review.applicantRemarks}/>}
+                {props.status.name !== 'DRAFT' && props.status.name !== 'L1' && <ReviewItem name="Remarks from L1" value={props.review.remarksL1}/>}
+                {props.status.name !== 'DRAFT' && props.status.name !== 'L1' && props.status.name !== 'L2' && <ReviewItem name="Remarks from L2" value={props.review.remarksL2}/>}
+                {props.status.name === 'COMPLETE' && <ReviewItem name="Remarks from Admin" value={props.review.remarksAdmin}/>}
+                
+            </Grid>
+
+            <Grid item xs={12} container direction="row">
+                <Grid xs={2} item></Grid>
+                <Grid xs={8} item>
+                    {(!props.createdBy || props.loggedInUserId === props.createdBy) && props.status.name === 'DRAFT' && 
+                        <ArcTextField id={componentName} label="Your comments" name="applicantRemarks" handlechange={e => props.handlechange(e)}   {...props}
+                                    multiline rows="5" error={props.errorfields.indexOf("applicantRemarks") > -1}/>}
+                        
+                        {props.status.name === 'L1' && <ArcTextField id={componentName} label="Your comments" name="remarksL1" handlechange={e => props.handlechange(e)}   {...props}
+                                    multiline rows="5" error={props.errorfields.indexOf("remarksL1") > -1}/>}
+
+                        {props.loggedInUserId !== props.createdBy && props.status.name === 'L2' && <ArcTextField id={componentName} label="Your comments" name="remarksL2" handlechange={e => props.handlechange(e)}   {...props}
+                                    multiline rows="5" error={props.errorfields.indexOf("remarksL2") > -1}/>}
+
+                        {props.loggedInUserId !== props.createdBy && props.status.name === 'ADMIN' && <ArcTextField id={componentName} label="Your comments" name="remarksAdmin" handlechange={e => props.handlechange(e)}   {...props}
+                                    multiline rows="5" error={props.errorfields.indexOf("remarksAdmin") > -1}/>}
+                </Grid>
+                <Grid xs={2} item></Grid>
             </Grid>
 
         </form>
     </div>
 
 function nextPage(props) {
-    console.log(props);
     if (validate(props).length === 0) {
-        props.nextPage(1);
+        // props.nextPage(1);
+        props.submit(props.loggedInUserId);
     }
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('description');
+    const errorfields = props.validateMandatoryFields();
     const errormessages = [];
 
     if (errorfields.length > 0) {
@@ -139,13 +174,17 @@ function validate(props) {
 }
 
 Review.protoTypes = {
+    wizardid: PropTypes.string,
     traveltype: PropTypes.object,
     clientinfo: PropTypes.object,
     purposeofvisit: PropTypes.object,
     flightdetails: PropTypes.object,
     hoteldetails: PropTypes.object,
     localtransportdetails: PropTypes.object,
-    review: PropTypes.object
+    review: PropTypes.object,
+    status: PropTypes.string,
+    createdBy:  PropTypes.string,
+    loggedInUserId: PropTypes.string
 }
 
 export default withWizard(Review, componentName)

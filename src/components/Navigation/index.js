@@ -74,10 +74,6 @@ class Navigation extends React.Component {
       return 'inherit';
     }
 
-    componentWillReceiveProps(nextProps) {
-      console.log(nextProps);
-    }
-
     // getMenuItemVariant(path) {
     //   if (window.location.pathname === path) {
     //     return 'text';
@@ -132,7 +128,7 @@ class Navigation extends React.Component {
         <MuiThemeProvider theme={arcNavTheme}>
           <AppBar position="static">
             <Toolbar>
-              <Hidden smUp smUp>
+              <Hidden smUp>
                 <IconButton className="arc-menu-button" color="inherit" aria-label="Menu" onClick={this.toggleDrawer('drawer', true)}>
                   <MenuIcon />
                 </IconButton>

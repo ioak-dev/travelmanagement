@@ -1,5 +1,6 @@
 import React from 'react'
 import Login from './login';
+import View from '../components/view';
 
 class ViewRequests extends React.Component {
     constructor(props) {
@@ -20,43 +21,10 @@ class ViewRequests extends React.Component {
             );
         } else {
             return (
-                // <Container>
-                //   <Row className="justify-content-md-center">
-                //       <h2>Your requests</h2>
-                //   </Row>
-                //   <br></br>
-                //     <Row className="justify-content-md-center">
-                //       <Col>
-                //         <Table striped bordered hover>
-                //           <thead>
-                //             <tr>
-                //               <th>#</th>
-                //               <th>Customer</th>
-                //               <th>From</th>
-                //               <th>To</th>
-                //             </tr>
-                //           </thead>
-                //           <tbody>
-                //             <tr>
-                //               <td>1</td>
-                //               <td>Cisco</td>
-                //               <td>Bangalore, India</td>
-                //               <td>London, United Kingdom</td>
-                //             </tr>
-                //             <tr>
-                //               <td>2</td>
-                //               <td>Dell</td>
-                //               <td>Hyderabad, India</td>
-                //               <td>Paris, France</td>
-                //             </tr>
-                //           </tbody>
-                //         </Table>
-                //       </Col>                       
-                //     </Row>
-                // </Container>
-                <h1>view requests</h1>
+                <View type='APPLICANT' history={this.props.history} />
             );
         }
     }
 }
+
 export default ViewRequests
