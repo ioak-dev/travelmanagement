@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorMessage from "./errormessage";
-import { Grid, Typography, Modal, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button } from '@material-ui/core';
+import { Grid, Typography, Hidden } from '@material-ui/core';
 import WizardFlow from './wizard-flow';
 import withWizard from './with-wizard';
 import ReviewItem from './review-item';
@@ -14,7 +14,12 @@ const Review = (props) =>
     <div className="arc-root">
         <form noValidate autoComplete="off">
                 <Grid item xs={12}>
-                    <WizardFlow modify={props.firstPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} submit={nextPage.bind(this, props)} />
+                    {props.status.name === 'DRAFT' && (!props.createdBy || props.createdBy === props.loggedInUserId)&& 
+                        <WizardFlow modify={props.firstPage.bind(this, props)} saveforlater={props.saveForLater.bind(this)} submit={submit.bind(this, props)} />}
+                    {(props.status.name === 'L1' || props.status.name === 'L2' || props.status.name === 'ADMIN') && props.createdBy !== props.loggedInUserId &&
+                        <WizardFlow approve={approve.bind(this, props)} reject={reject.bind(this, props)} />}
+                    {props.status.name === 'ADMIN_APPROVED' && props.createdBy !== props.loggedInUserId &&
+                        <WizardFlow complete={complete.bind(this, props)} />}
                 </Grid>
 
                 <ErrorMessage errors={props.errormessages} />
@@ -24,8 +29,20 @@ const Review = (props) =>
                 <Grid item xs={12} container direction="column" align="center">
                     <Typography variant="h4">{props.wizardid}</Typography>
                 </Grid>
+                <Grid item xs={12} container direction="column" align="center">
+                    <Typography variant="h6">{props.status.description}</Typography>
+                </Grid>
                 <br />
             </div>}
+
+            {/* <Grid item xs={12} container direction="column">
+                <Grid xs={12} container item direction="row">
+                    <Typography variant="h6">Applicant Details</Typography>
+                </Grid>
+                <ReviewItem name="Applicant Name" value={props.createdBy}/>
+            </Grid>
+
+            <br /> */}
 
             <Grid item xs={12} container direction="column">
                 <Grid xs={12} container item direction="row">
@@ -126,46 +143,91 @@ const Review = (props) =>
             </Grid>
 
             <Grid item xs={12} container direction="row">
-                <Grid xs={2} item></Grid>
-                <Grid xs={8} item>
-                    {(!props.createdBy || props.loggedInUserId === props.createdBy) && props.status.name === 'DRAFT' && 
-                        <ArcTextField id={componentName} label="Your comments" name="applicantRemarks" handlechange={e => props.handlechange(e)}   {...props}
-                                    multiline rows="5" error={props.errorfields.indexOf("applicantRemarks") > -1}/>}
-                        
-                        {props.status.name === 'L1' && <ArcTextField id={componentName} label="Your comments" name="remarksL1" handlechange={e => props.handlechange(e)}   {...props}
-                                    multiline rows="5" error={props.errorfields.indexOf("remarksL1") > -1}/>}
+                <Hidden smDown>
+                    <Grid xs={2} item></Grid>
+                    <Grid xs={8} item>
+                        {(!props.createdBy || props.loggedInUserId === props.createdBy) && props.status.name === 'DRAFT' && 
+                            <ArcTextField id={componentName} label="Your comments" name="applicantRemarks" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("applicantRemarks") > -1}/>}
+                            
+                            {props.status.name === 'L1' && <ArcTextField id={componentName} label="Your comments" name="remarksL1" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("remarksL1") > -1}/>}
 
-                        {props.loggedInUserId !== props.createdBy && props.status.name === 'L2' && <ArcTextField id={componentName} label="Your comments" name="remarksL2" handlechange={e => props.handlechange(e)}   {...props}
-                                    multiline rows="5" error={props.errorfields.indexOf("remarksL2") > -1}/>}
+                            {props.loggedInUserId !== props.createdBy && props.status.name === 'L2' && <ArcTextField id={componentName} label="Your comments" name="remarksL2" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("remarksL2") > -1}/>}
 
-                        {props.loggedInUserId !== props.createdBy && props.status.name === 'ADMIN' && <ArcTextField id={componentName} label="Your comments" name="remarksAdmin" handlechange={e => props.handlechange(e)}   {...props}
-                                    multiline rows="5" error={props.errorfields.indexOf("remarksAdmin") > -1}/>}
-                </Grid>
-                <Grid xs={2} item></Grid>
+                            {props.loggedInUserId !== props.createdBy && props.status.name === 'ADMIN' && <ArcTextField id={componentName} label="Your comments" name="remarksAdmin" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("remarksAdmin") > -1}/>}
+                    </Grid>
+                    <Grid xs={2} item></Grid>
+                </Hidden>
+                <Hidden smUp>
+                    <Grid xs={12} item>
+                        {(!props.createdBy || props.loggedInUserId === props.createdBy) && props.status.name === 'DRAFT' && 
+                            <ArcTextField id={componentName} label="Your comments" name="applicantRemarks" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("applicantRemarks") > -1}/>}
+                            
+                            {props.status.name === 'L1' && <ArcTextField id={componentName} label="Your comments" name="remarksL1" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("remarksL1") > -1}/>}
+
+                            {props.loggedInUserId !== props.createdBy && props.status.name === 'L2' && <ArcTextField id={componentName} label="Your comments" name="remarksL2" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("remarksL2") > -1}/>}
+
+                            {props.loggedInUserId !== props.createdBy && props.status.name === 'ADMIN' && <ArcTextField id={componentName} label="Your comments" name="remarksAdmin" handlechange={e => props.handlechange(e)}   {...props}
+                                        multiline rows="5" error={props.errorfields.indexOf("remarksAdmin") > -1}/>}
+                    </Grid>
+                </Hidden>
             </Grid>
 
         </form>
     </div>
 
-function nextPage(props) {
-    if (validate(props).length === 0) {
+function reject(props) {
+    if (validate(props, 'reject').length === 0) {
+        // props.nextPage(1);
+        props.reject(props.loggedInUserId);
+    }
+}
+
+function approve(props) {
+    if (validate(props, 'approve').length === 0) {
+        // props.nextPage(1);
+        props.approve(props.loggedInUserId);
+    }
+}
+
+function submit(props) {
+    if (validate(props, 'submit').length === 0) {
         // props.nextPage(1);
         props.submit(props.loggedInUserId);
     }
 }
 
-function validate(props) {
-    const errorfields = props.validateMandatoryFields();
+function complete(props) {
+    if (validate(props, 'complete').length === 0) {
+        // props.nextPage(1);
+        props.complete(props.loggedInUserId);
+    }
+}
+
+function validate(props, action) {
+    let errorfields = props.validateMandatoryFields();
     const errormessages = [];
 
-    if (errorfields.length > 0) {
-        errormessages.push("Mandatory fields missing");
+    if (props.status.name === 'L1' && action === 'reject') {
+        errorfields = props.validateMandatoryFields('remarksL1');
     }
-
-    // Series of business validations
-    if (props[componentName].description && props[componentName].description.length > 0 && props[componentName].description.length <= 50) {
-        errorfields.push('description');
-        errormessages.push('Description should be greater than 50 characters long');
+    
+    if (props.status.name === 'L2' && action === 'reject') {
+        errorfields = props.validateMandatoryFields('remarksL2');
+    }
+    
+    if (props.status.name === 'ADMIN' && action === 'reject') {
+        errorfields = props.validateMandatoryFields('remarksAdmin');
+    }
+    
+    if (errorfields.length > 0) {
+        errormessages.push("Reason for rejection missing");
     }
 
     props.reportErrors(errorfields, errormessages);
@@ -179,6 +241,7 @@ Review.protoTypes = {
     clientinfo: PropTypes.object,
     purposeofvisit: PropTypes.object,
     flightdetails: PropTypes.object,
+    visa: PropTypes.object,
     hoteldetails: PropTypes.object,
     localtransportdetails: PropTypes.object,
     review: PropTypes.object,

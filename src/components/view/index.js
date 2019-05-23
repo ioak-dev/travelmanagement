@@ -2,7 +2,7 @@ import React from 'react'
 import Wizard from '../../components/wizard';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchView, reloadView } from '../../actions/viewActions';
+import { fetchView, reloadView, removeItem } from '../../actions/viewActions';
 import { fetchLoggedUser, reloadLoggedUser } from '../../actions/userActions';
 import { reloadWizard } from '../../actions/wizardActions';
 import { Paper, TableHead, TableBody, Table, TableCell, TableRow, Grid, Hidden, Card, CardContent, Typography, IconButton, CardActions } from '@material-ui/core';
@@ -23,6 +23,7 @@ class ViewRequests extends React.Component {
     constructor(props) {
         super(props);
         this.edit = this.edit.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     componentDidMount() {
@@ -37,6 +38,10 @@ class ViewRequests extends React.Component {
         }
     }
 
+    delete(requestId) {
+        this.props.removeItem(this.props.type, this.props.loggedUser.id, requestId);
+    }
+
     edit(requestId) {
         this.props.reloadWizard(requestId, this.props.loggedUser.id);
         this.props.history.push('/createrequest');
@@ -49,16 +54,19 @@ class ViewRequests extends React.Component {
                 <br /><br /><br />
                 <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                 <Hidden smDown>
-                    <Grid item xs={2}></Grid>
-                    <Grid item xs={8}>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={10}>
                         <Paper className={styles.root}>
                             <Table className={styles.table}>
                                 <TableHead>
                                 <TableRow>
                                     <TableCell>Request ID</TableCell>
-                                    <TableCell align="center">Travel type</TableCell>
+                                    {this.props.type === 'REVIEWER' && <TableCell align="center">Applicant</TableCell>}
+                                    <TableCell align="center">Type</TableCell>
                                     <TableCell align="center">Client Name</TableCell>
+                                    <TableCell align="center">Travel Date</TableCell>
                                     <TableCell align="center">Status</TableCell>
+                                    <TableCell align="center">Submitted On</TableCell>
                                     <TableCell align="center">Action</TableCell>
                                 </TableRow>
                                 </TableHead>
@@ -68,13 +76,34 @@ class ViewRequests extends React.Component {
                                     <TableCell component="th" scope="row">
                                         {row.id}
                                     </TableCell>
+                                    {this.props.type === 'REVIEWER' && <TableCell align="center">{row.applicant}</TableCell>}
                                     <TableCell align="center">{row.traveltype.type}</TableCell>
                                     <TableCell align="center">{row.clientinfo.name}</TableCell>
+                                    <TableCell align="center">{moment(row.flightdetails.fromdate).format('YYYY-MM-DD')}</TableCell>
                                     <TableCell align="center">{row.status.description}</TableCell>
+                                    <TableCell align="center">{moment(row.submittedOn).format('YYYY-MM-DD')}</TableCell>
                                     <TableCell align="center">
-                                        {row.status.name === 'DRAFT' && <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">edit</i></IconButton>}
-                                        {row.status.name === 'DRAFT' && <IconButton size="small"><i className="material-icons">delete</i></IconButton>}
-                                        {row.status.name !== 'DRAFT' && <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">search</i></IconButton>}
+                                        {this.props.type === 'APPLICANT' && row.status.name === 'DRAFT' && 
+                                            <div>
+                                                <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">edit</i></IconButton>
+                                                <IconButton size="small" onClick={() => this.delete(row.id)}><i className="material-icons">delete</i></IconButton>
+                                            </div>}
+                                        {this.props.type === 'APPLICANT' && row.status.name !== 'DRAFT' && 
+                                            <div>
+                                                <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">visibility</i></IconButton>
+                                            </div>}
+                                        {this.props.type === 'REVIEWER' && row.status.name === 'ADMIN_APPROVED' &&
+                                            <div>
+                                                <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">playlist_add_check</i></IconButton>
+                                            </div>}
+                                        {this.props.type === 'REVIEWER' && row.status.name === 'COMPLETE' &&
+                                            <div>
+                                                <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">visibility</i></IconButton>
+                                            </div>}
+                                        {this.props.type === 'REVIEWER' && (row.status.name === 'L1' || row.status.name === 'L2' || row.status.name === 'ADMIN') &&
+                                            <div>
+                                                <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">call_split</i></IconButton>
+                                            </div>}
                                     </TableCell>
                                     </TableRow>
                                 ))}
@@ -82,12 +111,12 @@ class ViewRequests extends React.Component {
                             </Table>
                         </Paper>
                         </Grid>
-                        <Grid item xs={2}></Grid>
+                        <Grid item xs={1}></Grid>
                     </Hidden>
 
                     <Hidden smUp>
-                        <Grid item xs={2}></Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={10}>
                             {this.props.view.map(row => (
                                 <div key={row.id}>
                                     <Card>
@@ -116,7 +145,7 @@ class ViewRequests extends React.Component {
                                         </CardContent>
                                         <CardActions>
                                             <IconButton size="small" onClick={() => this.edit(row.id)}><i className="material-icons">edit</i></IconButton>
-                                            <IconButton size="small"><i className="material-icons">delete</i></IconButton>
+                                            <IconButton size="small" onClick={() => this.delete(row.id)}><i className="material-icons">delete</i></IconButton>
                                         </CardActions>
                                     </Card>
                                     <br />
@@ -124,7 +153,7 @@ class ViewRequests extends React.Component {
                             ))}
 
                         </Grid>
-                        <Grid item xs={2}></Grid>
+                        <Grid item xs={1}></Grid>
                     </Hidden>
                 </Grid>
             </div>
@@ -145,4 +174,4 @@ const mapStateToProps = state => ({
     loggedUser: state.user.loggedUser
 })
 
-export default connect( mapStateToProps, { fetchView, reloadView, fetchLoggedUser, reloadLoggedUser, reloadWizard } )(ViewRequests)
+export default connect( mapStateToProps, { fetchView, reloadView, removeItem, fetchLoggedUser, reloadLoggedUser, reloadWizard } )(ViewRequests)

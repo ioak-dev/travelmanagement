@@ -4,7 +4,7 @@ import {
     UPDATE_WIZARD,
     UPDATE_TRAVELTYPE,
     UPDATE_CLIENTINFO,
-    UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_HOTELDETAILS, UPDATE_LOCALTRANSPORTDETAILS
+    UPDATE_PURPOSEOFVISIT, UPDATE_FLIGHTDETAILS, UPDATE_VISA, UPDATE_HOTELDETAILS, UPDATE_LOCALTRANSPORTDETAILS
 } from '../actions/types';
 import moment from 'moment';
 
@@ -38,7 +38,8 @@ const initialState = {
         billability:'',
         fromdate: moment().toDate(),
         todate: moment().toDate(),
-        remarks:''
+        remarks:'',
+        required: null
     },
     localtransportdetails: {
         dateandtime: moment().toDate(),
@@ -87,6 +88,7 @@ export default function(state = initialState, action) {
                 clientinfo: action.payload.clientinfo,
                 purposeofvisit: action.payload.purposeofvisit,
                 flightdetails: action.payload.flightdetails,
+                visa: action.payload.visa,
                 hoteldetails: action.payload.hoteldetails,
                 localtransportdetails: action.payload.localtransportdetails,
                 review: action.payload.review
@@ -124,6 +126,13 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 flightdetails: action.payload.flightdetails
+            }
+        case UPDATE_VISA:
+            console.log("reducer UPDATE_VISA");
+            console.log(state);
+            return {
+                ...state,
+                visa: action.payload.visa
             }
         case UPDATE_HOTELDETAILS:
             console.log("reducer UPDATE_HOTELDETAILS");

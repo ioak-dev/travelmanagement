@@ -20,8 +20,8 @@ const FlightDetails = (props) =>
                 </Grid>
 
                 <ErrorMessage errors={props.errormessages} />
-
-                <br />
+            <br />
+                
                 <Grid item xs={6}>
                     <ArcTextField id={componentName} label="Onward Flight Sector*" name="sector1" {...props} handlechange={e => props.handlechange(e)}
                                   error={props.errorfields.indexOf("sector1") > -1}/>

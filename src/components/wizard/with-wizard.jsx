@@ -1,7 +1,8 @@
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
-import { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard, submitWizard } from '../../actions/wizardActions';
+import { goToPage, goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard, submitWizard, approveWizard, rejectWizard, saveWizard, completeWizard } from '../../actions/wizardActions';
 import moment from 'moment';
+import { SECTION_OUTCOME_SAVE, SECTION_OUTCOME_SUBMIT, SECTION_OUTCOME_APPROVE, SECTION_OUTCOME_REJECT, SECTION_OUTCOME_COMPLETE } from '../wizard/section-types'
 
 const withWizard = (WrappedComponent, dataref) => {
     class Wrapper extends Component {
@@ -96,13 +97,75 @@ const withWizard = (WrappedComponent, dataref) => {
                 review: this.state.review,
                 status: this.props.status.name
             });
-            this.props.goToNextPage(this.props.currentpage, 1);
+            this.props.goToPage(SECTION_OUTCOME_SUBMIT);
+        }
+
+        approve(userId) {
+            this.props.approveWizard(userId, {
+                id: this.props.wizardid,
+                createdBy: this.props.createdBy,
+                traveltype: this.props.traveltype,
+                clientinfo: this.props.clientinfo,
+                purposeofvisit: this.props.purposeofvisit,
+                flightdetails: this.props.flightdetails,
+                hoteldetails: this.props.hoteldetails,
+                localtransportdetails: this.props.localtransportdetails,
+                visa: this.props.visa,
+                review: this.state.review,
+                status: this.props.status.name
+            });
+            this.props.goToPage(SECTION_OUTCOME_APPROVE);
+        }
+
+        reject(userId) {
+            this.props.rejectWizard(userId, {
+                id: this.props.wizardid,
+                createdBy: this.props.createdBy,
+                traveltype: this.props.traveltype,
+                clientinfo: this.props.clientinfo,
+                purposeofvisit: this.props.purposeofvisit,
+                flightdetails: this.props.flightdetails,
+                hoteldetails: this.props.hoteldetails,
+                localtransportdetails: this.props.localtransportdetails,
+                visa: this.props.visa,
+                review: this.state.review,
+                status: this.props.status.name
+            });
+            this.props.goToPage(SECTION_OUTCOME_REJECT);
+        }
+
+        complete(userId) {
+            this.props.completeWizard(userId, {
+                id: this.props.wizardid,
+                createdBy: this.props.createdBy,
+                traveltype: this.props.traveltype,
+                clientinfo: this.props.clientinfo,
+                purposeofvisit: this.props.purposeofvisit,
+                flightdetails: this.props.flightdetails,
+                hoteldetails: this.props.hoteldetails,
+                localtransportdetails: this.props.localtransportdetails,
+                visa: this.props.visa,
+                review: this.state.review,
+                status: this.props.status.name
+            });
+            this.props.goToPage(SECTION_OUTCOME_COMPLETE);
         }
 
         saveForLater() {
-            console.log(this.state);
-            // call action to save
-            // redirect to last page
+            this.props.saveWizard(this.props.loggedInUserId, {
+                id: this.props.wizardid,
+                createdBy: this.props.createdBy,
+                traveltype: this.props.traveltype,
+                clientinfo: this.props.clientinfo,
+                purposeofvisit: this.props.purposeofvisit,
+                flightdetails: this.props.flightdetails,
+                hoteldetails: this.props.hoteldetails,
+                localtransportdetails: this.props.localtransportdetails,
+                visa: this.props.visa,
+                review: this.state.review,
+                status: this.props.status.name
+            });
+            this.props.goToPage(SECTION_OUTCOME_SAVE);
         }
 
         validateMandatoryFields(...fields) {
@@ -127,6 +190,9 @@ const withWizard = (WrappedComponent, dataref) => {
                     previousPage={this.previousPage.bind(this)}
                     saveForLater={this.saveForLater.bind(this)}
                     submit={this.submit.bind(this)}
+                    approve={this.approve.bind(this)}
+                    reject={this.reject.bind(this)}
+                    complete={this.complete.bind(this)}
                     validateMandatoryFields={this.validateMandatoryFields.bind(this)}
                     {...this.props} {...this.state} />
             );
@@ -148,7 +214,7 @@ const withWizard = (WrappedComponent, dataref) => {
         status: state.wizard.status
     })
 
-    return connect(mapStateToProps, { goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard, submitWizard })(Wrapper);
+    return connect(mapStateToProps, { goToPage, goToFirstPage, goToPreviousPage, goToNextPage, fetchWizard, updateWizard, submitWizard, approveWizard, rejectWizard, saveWizard, completeWizard })(Wrapper);
 }
 
 

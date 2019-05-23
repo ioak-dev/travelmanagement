@@ -21,8 +21,30 @@ const HotelDetails = (props) =>
 
                 <ErrorMessage errors={props.errormessages} />
 
+                </Grid>
                 <br />
 
+            <Grid container direction="column" justify="center" alignItems="center"  spacing={8}>
+                <Grid item xs={12}>
+                    <Typography variant="body1">Do you want us to book hotel accomodation?</Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RadioGroup
+                        aria-label="Hotel requirement"
+                        name="required"
+                        value={props[componentName].required}
+                        onChange={props.handlechange}
+                        row
+                    >
+                        <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                        <FormControlLabel value="no" control={<Radio />} label="No" />
+                    </RadioGroup>
+                </Grid>
+            </Grid>
+
+            {props[componentName].required === 'yes' && 
+            <Grid container direction="row" justify="center" alignItems="center"  spacing={8}>
                 <Grid item xs={12}>
                     <ArcTextField id={componentName} label="Hotel name" name="name" handlechange={e => props.handlechange(e)}   {...props}
                                   error={props.errorfields.indexOf("name") > -1}/>
@@ -59,7 +81,7 @@ const HotelDetails = (props) =>
                         <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
                     </RadioGroup>
                 </Grid>
-            </Grid>
+            </Grid>}
 
 
         </form>
@@ -80,25 +102,31 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('billability');
+    const errorfields = props.validateMandatoryFields('required');
     const errormessages = [];
+
+    if(props[componentName].required === 'yes') {
+        errorfields = props.validateMandatoryFields('billability');
+    }
 
     if (errorfields.length > 0) {
         errormessages.push("Mandatory fields missing");
     }
 
     // Series of business validations
-    if(moment(props.hoteldetails.fromdate).toDate() <= moment().toDate()) {
-        errormessages.push('Onward journey cannot be in the past');
-        errorfields.push('fromdate');
-    }
-    if(moment(props.hoteldetails.todate).toDate() <= moment().toDate()) {
-        errormessages.push('Return journey cannot be in the past');
-        errorfields.push('todate');
-    }
-    if(moment(props.hoteldetails.todate).toDate() < moment(props.hoteldetails.fromdate).toDate()) {
-        errormessages.push('Return journey cannot be before onward journey');
-        errorfields.push('todate');
+    if(props[componentName].required === 'yes') {
+        if(moment(props.hoteldetails.fromdate).toDate() <= moment().toDate()) {
+            errormessages.push('Onward journey cannot be in the past');
+            errorfields.push('fromdate');
+        }
+        if(moment(props.hoteldetails.todate).toDate() <= moment().toDate()) {
+            errormessages.push('Return journey cannot be in the past');
+            errorfields.push('todate');
+        }
+        if(moment(props.hoteldetails.todate).toDate() < moment(props.hoteldetails.fromdate).toDate()) {
+            errormessages.push('Return journey cannot be before onward journey');
+            errorfields.push('todate');
+        }
     }
 
     props.reportErrors(errorfields, errormessages);

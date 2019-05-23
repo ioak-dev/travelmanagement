@@ -12,8 +12,14 @@ import Localtransportdetails from "./localtransportdetails.jsx"
 import Review from "./review.jsx"
 import { Grid, Hidden } from '@material-ui/core';
 
-import { SECTION_FIRST, SECTION_02, SECTION_03, SECTION_04, SECTION_05, SECTION_06, SECTION_07, SECTION_REVIEW, SECTION_OUTCOME_SUBMIT } from '../wizard/section-types';
+import { SECTION_FIRST, SECTION_02, SECTION_03, SECTION_04, SECTION_05, SECTION_06, SECTION_07, 
+    SECTION_REVIEW, SECTION_OUTCOME_SUBMIT, SECTION_OUTCOME_SAVE, SECTION_OUTCOME_APPROVE, 
+    SECTION_OUTCOME_REJECT, SECTION_OUTCOME_COMPLETE } from '../wizard/section-types';
 import OutcomeSubmit from './outcome-submit.jsx';
+import OutcomeSave from './outcome-save.jsx';
+import OutcomeApprove from './outcome-approve.jsx';
+import OutcomeReject from './outcome-reject.jsx';
+import OutcomeComplete from './outcome-complete.jsx';
 
 class Wizard extends React.Component {
 
@@ -28,15 +34,19 @@ class Wizard extends React.Component {
     render() {
         const wizardPages =
             <div>
-                {this.props.currentpage === SECTION_FIRST && <Traveltype />}
-                {this.props.currentpage === SECTION_02 && <Clientinfo />}
-                {this.props.currentpage === SECTION_03 && <Purposeofvisit />}
-                {this.props.currentpage === SECTION_04 && <Flightdetails />}
-                {this.props.currentpage === SECTION_05 && <Visa />}
-                {this.props.currentpage === SECTION_06 && <Hoteldetails />}
-                {this.props.currentpage === SECTION_07 && <Localtransportdetails />}
+                {this.props.currentpage === SECTION_FIRST && <Traveltype loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_02 && <Clientinfo loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_03 && <Purposeofvisit loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_04 && <Flightdetails loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_05 && <Visa loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_06 && <Hoteldetails loggedInUserId={this.props.loggedUser.id} />}
+                {this.props.currentpage === SECTION_07 && <Localtransportdetails loggedInUserId={this.props.loggedUser.id} />}
                 {this.props.currentpage === SECTION_REVIEW && <Review loggedInUserId={this.props.loggedUser.id} />}
                 {this.props.currentpage === SECTION_OUTCOME_SUBMIT && <OutcomeSubmit />}
+                {this.props.currentpage === SECTION_OUTCOME_SAVE && <OutcomeSave />}
+                {this.props.currentpage === SECTION_OUTCOME_APPROVE && <OutcomeApprove />}
+                {this.props.currentpage === SECTION_OUTCOME_REJECT && <OutcomeReject />}
+                {this.props.currentpage === SECTION_OUTCOME_COMPLETE && <OutcomeComplete />}
             </div>;
 
         return (

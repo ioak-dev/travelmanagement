@@ -92,7 +92,7 @@ class Navigation extends React.Component {
       const LINK_HOME = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/home" label="Home" />;
       const LINK_CREATE_REQUEST = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/createrequest" label="Create Request" />;
       const LINK_VIEW_REQUESTS = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/viewrequests" label="View Requests" />;
-      const LINK_CONTROL_REQUESTS = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/controlrequests" label="Control Requests" />;
+      const LINK_CONTROL_REQUESTS = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/controlrequests" label="Manage Requests" />;
       const LINK_USER_ADMINISTRATION = <ArcButtonNavWrapper size="small" getMenuItemColor={this.getMenuItemColor.bind(this)} pathname="/useradministration" label="User Administration" />;
       
         
@@ -116,10 +116,10 @@ class Navigation extends React.Component {
                 <ListItemIcon><i className="material-icons">code</i></ListItemIcon>
                 {LINK_CONTROL_REQUESTS}
               </ListItem>
-              <ListItem>
+              {/* <ListItem>
                 <ListItemIcon><i className="material-icons">person</i></ListItemIcon>
                 {LINK_USER_ADMINISTRATION}
-              </ListItem>
+              </ListItem> */}
           </List>
         </div>
       );
@@ -154,7 +154,7 @@ class Navigation extends React.Component {
                 {LINK_CREATE_REQUEST}
                 {LINK_VIEW_REQUESTS}
                 {LINK_CONTROL_REQUESTS}
-                {LINK_USER_ADMINISTRATION}
+                {/* {LINK_USER_ADMINISTRATION} */}
               </Hidden>
               
               {/* Right icons */}

@@ -30,6 +30,7 @@ export const reloadWizard = (id, loggedInUserId) => dispatch => {
                 clientinfo: wizard.clientinfo,
                 purposeofvisit: wizard.purposeofvisit,
                 flightdetails: wizard.flightdetails,
+                visa: wizard.visa,
                 hoteldetails: wizard.hoteldetails,
                 localtransportdetails: wizard.localtransportdetails,
                 review: wizard.review
@@ -80,6 +81,30 @@ export const updateWizard = (type, id, data) => dispatch => {
     })
 }
 
+export const saveWizard = (userId, data) => dispatch => {
+    console.log(data);
+    axios.put('http://localhost:8080/wizard/' + userId, data, null)
+        .then((response) => {
+            const wizard = response.data;
+            dispatch({
+                type: UPDATE_WIZARD,
+                payload: {
+                    wizardid: wizard.id,
+                    status: wizard.status,
+                    createdBy: wizard.createdBy,
+                    traveltype: wizard.traveltype,
+                    clientinfo: wizard.clientinfo,
+                    purposeofvisit: wizard.purposeofvisit,
+                    flightdetails: wizard.flightdetails,
+                    visa: wizard.visa,
+                    hoteldetails: wizard.hoteldetails,
+                    localtransportdetails: wizard.localtransportdetails,
+                    review: wizard.review
+                }
+            })
+        })
+}
+
 export const submitWizard = (userId, data) => dispatch => {
     console.log(data);
     axios.put('http://localhost:8080/wizard/' + userId, data, null)
@@ -99,6 +124,95 @@ export const submitWizard = (userId, data) => dispatch => {
                         clientinfo: wizard.clientinfo,
                         purposeofvisit: wizard.purposeofvisit,
                         flightdetails: wizard.flightdetails,
+                        visa: wizard.visa,
+                        hoteldetails: wizard.hoteldetails,
+                        localtransportdetails: wizard.localtransportdetails,
+                        review: wizard.review
+                    }
+                })
+            })
+        })
+}
+
+export const completeWizard = (userId, data) => dispatch => {
+    console.log(data);
+    axios.put('http://localhost:8080/wizard/' + userId, data, null)
+        .then((response) => {
+
+            axios.post('http://localhost:8080/wizard/' + response.data.id + '/complete/' + userId)
+            .then((response) => {
+            
+                const wizard = response.data;
+                dispatch({
+                    type: UPDATE_WIZARD,
+                    payload: {
+                        wizardid: wizard.id,
+                        status: wizard.status,
+                        createdBy: wizard.createdBy,
+                        traveltype: wizard.traveltype,
+                        clientinfo: wizard.clientinfo,
+                        purposeofvisit: wizard.purposeofvisit,
+                        flightdetails: wizard.flightdetails,
+                        visa: wizard.visa,
+                        hoteldetails: wizard.hoteldetails,
+                        localtransportdetails: wizard.localtransportdetails,
+                        review: wizard.review
+                    }
+                })
+            })
+        })
+}
+
+
+export const approveWizard = (userId, data) => dispatch => {
+    console.log(data);
+    axios.put('http://localhost:8080/wizard/' + userId, data, null)
+        .then((response) => {
+
+            axios.post('http://localhost:8080/wizard/' + response.data.id + '/approve/' + userId)
+            .then((response) => {
+            
+                const wizard = response.data;
+                dispatch({
+                    type: UPDATE_WIZARD,
+                    payload: {
+                        wizardid: wizard.id,
+                        status: wizard.status,
+                        createdBy: wizard.createdBy,
+                        traveltype: wizard.traveltype,
+                        clientinfo: wizard.clientinfo,
+                        purposeofvisit: wizard.purposeofvisit,
+                        flightdetails: wizard.flightdetails,
+                        visa: wizard.visa,
+                        hoteldetails: wizard.hoteldetails,
+                        localtransportdetails: wizard.localtransportdetails,
+                        review: wizard.review
+                    }
+                })
+            })
+        })
+}
+
+export const rejectWizard = (userId, data) => dispatch => {
+    console.log(data);
+    axios.put('http://localhost:8080/wizard/' + userId, data, null)
+        .then((response) => {
+
+            axios.post('http://localhost:8080/wizard/' + response.data.id + '/reject/' + userId)
+            .then((response) => {
+            
+                const wizard = response.data;
+                dispatch({
+                    type: UPDATE_WIZARD,
+                    payload: {
+                        wizardid: wizard.id,
+                        status: wizard.status,
+                        createdBy: wizard.createdBy,
+                        traveltype: wizard.traveltype,
+                        clientinfo: wizard.clientinfo,
+                        purposeofvisit: wizard.purposeofvisit,
+                        flightdetails: wizard.flightdetails,
+                        visa: wizard.visa,
                         hoteldetails: wizard.hoteldetails,
                         localtransportdetails: wizard.localtransportdetails,
                         review: wizard.review

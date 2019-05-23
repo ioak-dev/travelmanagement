@@ -8,3 +8,7 @@ export const SECTION_06 = 6;
 export const SECTION_07 = 7;
 export const SECTION_REVIEW = 8;
 export const SECTION_OUTCOME_SUBMIT = 9;
+export const SECTION_OUTCOME_SAVE = 10;
+export const SECTION_OUTCOME_APPROVE = 11;
+export const SECTION_OUTCOME_REJECT = 12;
+export const SECTION_OUTCOME_COMPLETE = 13;
