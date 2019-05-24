@@ -15,7 +15,8 @@ const initialState = {
         description: 'Draft'
     },
     traveltype: {
-        type: null
+        type: null,
+        billability: null
     },
     clientinfo: {
         name: '',

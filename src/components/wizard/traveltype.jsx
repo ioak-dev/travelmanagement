@@ -40,6 +40,23 @@ const Traveltype = (props) =>
                         <FormControlLabel value="International" control={<Radio />} label="International" />
                     </RadioGroup>
                 </Grid>
+                {props[componentName].type && <Grid  justify="center">
+                    <Grid item xs={12} >
+                    <Typography variant="h6">Is your Travel Billable?</Typography>
+                    </Grid>
+                    <Grid item xs={12} >
+                    <RadioGroup
+                        aria-label="Billability"
+                        name="billability"
+                        value={props[componentName].billability}
+                        onChange={props.handlechange}
+                        row
+                    >
+                        <FormControlLabel value="billable" control={<Radio />} label="Billable" />
+                        <FormControlLabel value="non-billable" control={<Radio />} label="Non billable" />
+                    </RadioGroup>
+                    </Grid>
+                </Grid>}
 
             </Grid>
 
@@ -58,7 +75,7 @@ function nextPage(props) {
 }
 
 function validate(props) {
-    const errorfields = props.validateMandatoryFields('type');
+    const errorfields = props.validateMandatoryFields('type','billability');
     const errormessages = [];
 
     if (errorfields.length > 0) {
